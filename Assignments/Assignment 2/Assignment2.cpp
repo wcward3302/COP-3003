@@ -5,7 +5,7 @@ Info: Assignment 2
 
 Construction:
 - loop collect user grades
-    - validate for range x to y and not chars
+    - validate for range x to y
     - insert rounded grades into array
 - find the lowest grade
 - calculate average minus lowest grade
