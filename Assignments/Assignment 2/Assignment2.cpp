@@ -68,25 +68,33 @@ int main()
 
     std::cout << "\n\n";
 
-    // this for loop will compare the [i] value to the current lowest grade variable and adjust accordingly to get the lowest grade
+    // This for loop will sum all the grades by adding the I value, then the i + n, etc. Will also determine lowest grade for later calculation
     for(int i = 0; i < user_input_array.size(); i++)
-    { 
-        std::cout << user_input_array[i] << ", ";
+    {
+        sum_of_grades = sum_of_grades + user_input_array[i];
+        
         if (user_input_array[i] < lowest_grade)
         {
             lowest_grade = user_input_array[i];
         }
     }
 
-
-    // This for loop will sum all the grades by adding the I value, then the i + n, etc.
-    for(int i = 0; i < user_input_array.size(); i++)
-    {
-        sum_of_grades = sum_of_grades + user_input_array[i];
-    }
-
     // simple average of the sum of all the grades minus the score of the dropped grade
     average_of_grades = (sum_of_grades - lowest_grade) / (user_input_array.size() - 1); 
+
+    // output user grades minus the lowest score, once lowest score is skipped, set variable to -1 so another value is not skipped
+    int counter = 1;
+    for (int i = 0; i < user_input_array.size(); i++)
+    {
+        if (user_input_array[i] == lowest_grade)
+        {
+            lowest_grade = -1;
+        }
+        else
+        {
+            std::cout << "Grade " << counter++ << " was " << user_input_array[i] << "\n";
+        }
+    }
 
     // enter switch based on average grade value, will output accordingly
     std::cout << "\nYour final grade was ";
