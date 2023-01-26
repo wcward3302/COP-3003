@@ -1,25 +1,24 @@
 #include <iostream>
 
 // function one, summation
-int summation(int x, int y)
+void summation(int x, int y)
 {
     int output = 0;
 
     // basic summation for loop, will add 'x' to 'x', 'y' times
     for (int i = 0; i < y; i++)
     {   
-        if (i < y -1)
+        if (i < y -1) 
         {
             std::cout << x << " + ";
         }
-        else
+        else 
         {
             std::cout << x << "\n\n";
         }
         output = output + x;
     }
     std::cout << "Summation = " << output << "\n\n";
-    return output;
 }
 
 int main()
@@ -33,7 +32,7 @@ int main()
     std::cin >> x;
     std::cout << "\nResponse (y): ";
     std::cin >> y;
-    std::cout << "\n\nOutput: ";
+    std::cout << "\nOutput: ";
     
     // call function and pass input
     summation(x, y);
