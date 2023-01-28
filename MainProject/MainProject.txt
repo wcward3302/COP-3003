@@ -1,7 +1,9 @@
 Project idea:
 
-C++ program with GUI, can do c++ coded games. 
+'Game launcher GUI with games' 
 
-Maybe: snake, mario-like game, temple_run-like game, maybe duck hunter with curser as point of aim?
-Game library TBD, but plan to have a gui for user to select their game 
-maybe: input username, store high scores
+Goals: 
+    - GUI allowing user to select games
+    - either play them on that window or pop open a console/terminal
+    - 4+ different games, probably as many as I have time to code, but 4 is a tentative floor. 
+    - Possibly keep a file to store high scores / player info / TBD
