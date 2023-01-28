@@ -21,6 +21,8 @@ void summation(int x, int y)
     std::cout << "Summation = " << output << "\n\n";
 }
 
+// use mod and div for the remaining functions
+
 int main()
 {
     // initialize variables
