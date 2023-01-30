@@ -7,3 +7,4 @@ Goals:
     - either play them on that window or pop open a console/terminal
     - 4+ different games, probably as many as I have time to code, but 4 is a tentative floor. 
     - Possibly keep a file to store high scores / player info / TBD
+    - Maybe ask for login credentials to allow multiple users(?)
