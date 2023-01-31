@@ -30,15 +30,16 @@ void quit_grading (int x){
     case 0:
         // reason 0, terminate
         std::cout << "Thank you for using our product!\n";
-        exit (1);
+        //exit (1);
     case 1:
         // reason 1
         std::cout << "Sorry you had to quit early. Thank you for using out product!\n";
-        exit (1);
+        //exit (1);
         break;
     default: // default case just skips the switch
         break;
     }
+
 }
 
 /*
@@ -69,10 +70,10 @@ int get_grade (){
             - return the average for the passed array
 */
 
-int get_average (int grade_array[]){
+int get_average (float grade_array[], int size){
     int sum = 0;
     int average = 0;
-    
+    return average;
 }
 
 /*
@@ -82,9 +83,19 @@ int get_average (int grade_array[]){
 */
 
 int main(){
-    while (true) { // loop forever until quit_grading gets passed 0
-        get_grade();
+    int counter = 0;
+    std::array <float, 11> user_input_array;
+    
+    while (counter < 11) { // loop forever until quit_grading gets passed 0
+        user_input_array[counter] = get_grade();
+        counter++;
     }
 
+    std::cout << "Average = " << get_average(user_input_array, user_input_array.size()) << "\n";
+
+    for (auto x : user_input_array){
+        
+;   }
+    quit_grading(0);
     
 }
