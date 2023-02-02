@@ -30,16 +30,15 @@ void quit_grading (int x){
     case 0:
         // reason 0, terminate
         std::cout << "Thank you for using our product!\n";
-        //exit (1);
+        exit (1);
     case 1:
         // reason 1
         std::cout << "Sorry you had to quit early. Thank you for using out product!\n";
-        //exit (1);
+        exit (1);
         break;
     default: // default case just skips the switch
         break;
     }
-
 }
 
 /*
@@ -54,11 +53,58 @@ void quit_grading (int x){
 */
 
 int get_grade (){
+    std::string continue_check;
     float user_input = 0;
-    std::cout << "Do you want to continue entering grades? 1 to quit\n";
-    std::cin >> user_input;
+    bool user_input_valid = false;
 
-    quit_grading(user_input);
+    std::cout << "Do you want to continue entering grades? (y to continue)\nResponse: ";
+    std::cin >> continue_check;
+
+    if (char(continue_check[0]) == 'y' || char(continue_check[0]) == 'Y'){
+        while(!user_input_valid)
+        { 
+            std::cout << "Enter grade: ";
+            std::cin >> user_input;
+
+            // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
+            if(user_input >= 0 && user_input <= 100 && std::cin.good()){ 
+                user_input_valid = true;
+            }
+
+            // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
+            else{
+                std::cout << "please enter a valid response (0-100)\n";
+                std::cin.clear();
+                std::cin.ignore(100,'\n');
+            }
+        }
+    }
+    else{
+        quit_grading(1);
+    }
+    return user_input;
+}
+
+int get_grade_all (){
+    float user_input = 0;
+    bool user_input_valid = false;
+
+    while(!user_input_valid){ 
+        std::cout << "Enter grade: ";
+        std::cin >> user_input;
+
+        // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
+        if(user_input >= 0 && user_input <= 100 && std::cin.good()){ 
+            user_input_valid = true;
+        }
+
+        // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
+        else{
+            std::cout << "please enter a valid response (0-100)\n";
+            std::cin.clear();
+            std::cin.ignore(100,'\n');
+        }
+    }
 
     return user_input;
 }
@@ -70,9 +116,18 @@ int get_grade (){
             - return the average for the passed array
 */
 
-int get_average (float grade_array[], int size){
+int get_average (std::array <int, 11> grade_array){
     int sum = 0;
     int average = 0;
+    int counter = 0;
+    
+    for (int x = 1; x < 11; x++){
+        sum = sum + grade_array[x];
+        counter++;
+    }
+
+    average = sum / counter;
+
     return average;
 }
 
@@ -83,19 +138,54 @@ int get_average (float grade_array[], int size){
 */
 
 int main(){
-    int counter = 0;
-    std::array <float, 11> user_input_array;
-    
-    while (counter < 11) { // loop forever until quit_grading gets passed 0
-        user_input_array[counter] = get_grade();
-        counter++;
+
+    int loop_counter = 0, average_grade = 0;
+    std::string user_selection;
+    std::array<int, 11> user_input_array;
+
+    std::cout << "Do you want to enter all grades now? Yes to continue - ";
+    std::cin >> user_selection;
+
+    if (char(user_selection[0]) == 'y' || char(user_selection[0] == 'Y')){
+        while (loop_counter < 11){
+            user_input_array[loop_counter] = get_grade_all();
+            loop_counter++;
+        }
+    }
+    else{
+        while (loop_counter < 11){
+            user_input_array[loop_counter] = get_grade();
+            loop_counter++;
+        }
     }
 
-    std::cout << "Average = " << get_average(user_input_array, user_input_array.size()) << "\n";
+    std::sort(user_input_array.begin(), user_input_array.end());
 
-    for (auto x : user_input_array){
-        
-;   }
-    quit_grading(0);
+    average_grade = get_average(user_input_array);
+
+    std::cout << "\n\nAverage = " << average_grade << "\n\n";
     
+    std::cout << "\nYour final grade was ";
+    switch (average_grade)
+    {
+        // case x .... y will check if average_of_grades is in a range and enter a case accordingly. 
+        case 90 ... 100: 
+            std::cout << "A";
+            break;
+        case 80 ... 89:
+            std::cout << "B";
+            break;
+        case 70 ... 79:
+            std::cout << "C";
+            break;
+        case 60 ... 69:
+            std::cout << "D";
+            break;
+        default:
+            std::cout << "F";
+            break;
+    }
+
+    std::cout << "\n\n";
+
 }
