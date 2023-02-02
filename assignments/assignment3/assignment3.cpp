@@ -21,6 +21,7 @@ Info: Assignment 3
 */
 
 void quit_grading (int x){
+
     // switch based on input from main, once finished, the program will exit
     switch (x){
     case -1:
@@ -53,13 +54,17 @@ void quit_grading (int x){
 */
 
 int get_grade (){
+
+    // initialize variables
     std::string continue_check;
     float user_input = 0;
     bool user_input_valid = false;
 
+    // ask user if want to continue entering grades
     std::cout << "Do you want to continue entering grades? (y to continue)\nResponse: ";
     std::cin >> continue_check;
 
+    // if first char of user input is y for yes, get grade
     if (char(continue_check[0]) == 'y' || char(continue_check[0]) == 'Y'){
         while(!user_input_valid)
         { 
@@ -79,6 +84,7 @@ int get_grade (){
             }
         }
     }
+    // if user does not give yes, quit program by passing quit_grading a 1
     else{
         quit_grading(1);
     }
@@ -86,9 +92,12 @@ int get_grade (){
 }
 
 int get_grade_all (){
+
+    // initialize variables
     float user_input = 0;
     bool user_input_valid = false;
 
+    // loop will be false until user input is validated and passed true flag
     while(!user_input_valid){ 
         std::cout << "Enter grade: ";
         std::cin >> user_input;
@@ -106,6 +115,7 @@ int get_grade_all (){
         }
     }
 
+    // return the user input once validated
     return user_input;
 }
 
@@ -117,17 +127,22 @@ int get_grade_all (){
 */
 
 int get_average (std::array <int, 11> grade_array){
+
+    // initialize variables
     int sum = 0;
     int average = 0;
     int counter = 0;
     
+    // loop though the array except for the first value, which will be the lowest grade
     for (int x = 1; x < 11; x++){
         sum = sum + grade_array[x];
         counter++;
     }
 
+    // take sum from loop and divide by number of elements
     average = sum / counter;
 
+    // return the calculated average
     return average;
 }
 
@@ -139,19 +154,26 @@ int get_average (std::array <int, 11> grade_array){
 
 int main(){
 
+    // initialize variables
     int loop_counter = 0, average_grade = 0;
     std::string user_selection;
     std::array<int, 11> user_input_array;
 
+    // ask user if they want to input all grades now or specify on a per-grade basis (I DEFINITELY did not add this to make testing easier...)
     std::cout << "Do you want to enter all grades now? Yes to continue - ";
     std::cin >> user_selection;
 
+    std::cout << "Enter grades - lowest score will be dropped!\n";
+
+    // if user wants to enter all grades now...
     if (char(user_selection[0]) == 'y' || char(user_selection[0] == 'Y')){
         while (loop_counter < 11){
             user_input_array[loop_counter] = get_grade_all();
             loop_counter++;
         }
     }
+
+    // use function where user will specify they want to continue on a per-grade basis
     else{
         while (loop_counter < 11){
             user_input_array[loop_counter] = get_grade();
@@ -159,12 +181,19 @@ int main(){
         }
     }
 
+    for (int x = 0; x < user_input_array.size(); x++){
+        std::cout << "\nGrade " << x + 1 << " is " << user_input_array[x];
+    }
+
+    // sort the array to make 0 element lowest grade
     std::sort(user_input_array.begin(), user_input_array.end());
 
     average_grade = get_average(user_input_array);
 
     std::cout << "\n\nAverage = " << average_grade << "\n\n";
+
     
+    // display final grade
     std::cout << "\nYour final grade was ";
     switch (average_grade)
     {
