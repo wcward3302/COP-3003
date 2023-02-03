@@ -21,3 +21,17 @@ user info :
 
 Games: 
 - TBD, still reading into different options
+
+
+
+------- notes -------
+Maybe focus on game rather than launcher, get gui going, 
+get a gui going, display simple info, maybe a enter button that doesn’t lead anywhere at the moment
+partial front end, move to functional back end, finish front end (?)
+
+Increments is key
+develop animation cycles, finished working alpha or expo demo ready to go. 
+"Splash screen"? "Maybe some moving parts"
+Create a checklist, keep progress going, get a goal!
+incremental is good, 
+SFML?
