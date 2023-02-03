@@ -10,6 +10,7 @@ Info: Assignment 3
 
 #include <iostream>
 #include <array>
+#include <math.h>
 
 /*
 3. Create a brand new function: quit_grading (or quitGrading) use the naming style that fits your code
@@ -53,6 +54,7 @@ void quit_grading (int x){
             - If its not it will run quit_grading with a -1
 */
 
+// function is called, gets input from user, validates, returns trunc'd value if valid.
 int get_grade (){
 
     // initialize variables
@@ -88,9 +90,11 @@ int get_grade (){
     else{
         quit_grading(1);
     }
-    return user_input;
+    return trunc(user_input);
 }
 
+
+// Same as above function but will not require user specify y/n for every grade input
 int get_grade_all (){
 
     // initialize variables
@@ -126,21 +130,20 @@ int get_grade_all (){
             - return the average for the passed array
 */
 
+// function takes array of grades (after being sorted), sums 1 - 10 values, divides by size of array - 1. Lowest grade = first gets ignored. 
 int get_average (std::array <int, 11> grade_array){
 
     // initialize variables
     int sum = 0;
     int average = 0;
-    int counter = 0;
     
     // loop though the array except for the first value, which will be the lowest grade
-    for (int x = 1; x < 11; x++){
+    for (int x = 1; x < grade_array.size(); x++){
         sum = sum + grade_array[x];
-        counter++;
     }
 
     // take sum from loop and divide by number of elements
-    average = sum / counter;
+    average = sum / (grade_array.size() - 1);
 
     // return the calculated average
     return average;
@@ -190,11 +193,11 @@ int main(){
 
     average_grade = get_average(user_input_array);
 
-    std::cout << "\n\nAverage = " << average_grade << "\n\n";
+    std::cout << "\n\nAverage after dropping lowest grade is " << average_grade << "\n\n";
 
     
     // display final grade
-    std::cout << "\nYour final grade was ";
+    std::cout << "\nYour final grade is ";
     switch (average_grade)
     {
         // case x .... y will check if average_of_grades is in a range and enter a case accordingly. 
