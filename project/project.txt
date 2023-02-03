@@ -14,6 +14,7 @@ So far:
 
 GUI -https://www.wxwidgets.org/ 
 - cross platform
+- need to do more reading to tell if will work for application
 
 user info :
 - probably will store info in a json or xml file along side source code
