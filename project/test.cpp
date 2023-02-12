@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 
-//g++ test.cpp -lsfml-graphics -lsfml-window -lsfml-system -o testing.out
 
 int main()
 {
