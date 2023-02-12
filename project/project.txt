@@ -43,5 +43,4 @@ Write to file with vectors - https://web.microsoftstream.com/video/78572916-75e0
 
 
 G++ terminal run command with libraries and output name change:
-
-g++ test.cpp -lsfml-graphics -lsfml-window -lsfml-system -o testing.out
+g++ -std=c++17 test.cpp -lsfml-graphics -lsfml-window -lsfml-system -o project.out

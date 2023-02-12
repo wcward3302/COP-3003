@@ -1,36 +1,39 @@
 #include <SFML/Graphics.hpp>
-
+#include <filesystem>
+#include <iostream>
 
 int main()
 {
 
-    std::string image_location = "/Users/willward/Library/CloudStorage/OneDrive-Personal/Documents/Current Courses/COP-3003/project/Images/photo-1555505019-8c3f1c4aba5f.jpeg";
-    std::string font_location = "/Users/willward/Library/CloudStorage/OneDrive-Personal/Documents/Current Courses/COP-3003/project/Fonts/ChrustyRock-ORLA.ttf";
+    // dynamic file paths
+    std::string file_path = std::filesystem::current_path();
+    std::string image_location = file_path + "/Images/background.jpeg";
+    std::string font_location = file_path + "/Fonts/Menlo-Regular.ttf";
+    
+    //instance for window
+    sf::RenderWindow window(sf::VideoMode(1500, 1000), "SFML Project Testing Application");
 
-    sf::RenderWindow window(sf::VideoMode(1640, 1480), "SFML Application");
-    sf::CircleShape shape;
-
+    //Background 
     sf::Texture texture;
     texture.loadFromFile(image_location);
     sf::Sprite sprite(texture);
 
+    // shape
+    sf::CircleShape shape;
     shape.setRadius(40.f);
-    shape.setPosition(100.f, 100.f);
+    shape.setPosition(200.f, 300.f);
     shape.setFillColor(sf::Color::Cyan);
 
-
+    // Text
     sf::Text text;
-
     sf::Font font;
     font.loadFromFile(font_location);
-    // select the font
-    text.setFont(font); // font is a sf::Font
+    text.setFont(font);
     text.setString("Hello world");
-    text.setCharacterSize(124); // in pixels, not points!
+    text.setCharacterSize(110);
     text.setFillColor(sf::Color::Black);
-    text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 
-
+    // while window is open, draw and display objects to window
     while (window.isOpen())
     {
         sf::Event event;
