@@ -4,7 +4,6 @@
 
 int main()
 {
-
     // dynamic file paths
     std::string file_path = std::filesystem::current_path();
     std::string image_location = file_path + "/Images/background.jpeg";
@@ -12,6 +11,7 @@ int main()
     
     //instance for window
     sf::RenderWindow window(sf::VideoMode(1500, 1000), "SFML Project Testing Application");
+    window.setVerticalSyncEnabled(true);
 
     //Background 
     sf::Texture texture;
@@ -32,6 +32,7 @@ int main()
     text.setString("Hello world");
     text.setCharacterSize(110);
     text.setFillColor(sf::Color::Black);
+
 
     // while window is open, draw and display objects to window
     while (window.isOpen())
