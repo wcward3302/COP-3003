@@ -33,8 +33,7 @@ Increments is key
 develop animation cycles, finished working alpha or expo demo ready to go. 
 "Splash screen"? "Maybe some moving parts"
 Create a checklist, keep progress going, get a goal!
-incremental is good, 
-SFML?
+incremental is good
 
 
 
@@ -42,5 +41,5 @@ Clion w/ SFML - https://www.youtube.com/watch?v=BILAqQ-ZFDA
 Write to file with vectors - https://web.microsoftstream.com/video/78572916-75e0-4a5c-9ead-bac3e92b562e
 
 
-G++ terminal run command with libraries and output name change:
-g++ -std=c++17 test.cpp -lsfml-graphics -lsfml-window -lsfml-system -o project.out
+----G++ terminal run command with libraries and output name change----
+g++ -std=c++17 -lsfml-graphics -lsfml-window -lsfml-system -o project.out stage-1.cpp 
