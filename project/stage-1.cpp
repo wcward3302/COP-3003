@@ -1,8 +1,14 @@
+/*
+Current state 
+- create shapes, texts, backgrounds
+- create window
+- collect input from keyboard and moves an object on the screen
+*/
+
+
 #include <SFML/Graphics.hpp>
 #include <filesystem>
 #include <iostream>
-#include <sstream>
-
 
 int main()
 {
@@ -59,22 +65,22 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
             // left key is pressed: move our character
             window.setTitle("Moving Right");
-            shape.move(1.f, 0.f);
+            shape.move(2.f, 0.f);
         }
         // if press Up arrow
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
             window.setTitle("Moving Up");
-            shape.move(0.f, -1.f);
+            shape.move(0.f, -2.f);
         }
         // if press Left arrow
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
             window.setTitle("Moving Left");
-            shape.move(-1.f, 0.f);
+            shape.move(-2.f, 0.f);
         }
         // if press Down arrow
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
             window.setTitle("Moving Down");
-            shape.move(0.f, 1.f);
+            shape.move(0.f, 2.f);
         }
         // if press Space
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
