@@ -1,0 +1,46 @@
+Project idea:
+
+'Game launcher GUI with games' 
+
+Goals: 
+    - GUI allowing user to select games
+    - either play them on that window or pop open a console/terminal
+    - 4+ different games, probably as many as I have time to code, but 4 is a tentative floor. 
+    - Possibly keep a file to store high scores / player info / TBD
+    - Maybe ask for login credentials to allow multiple users(?)
+
+
+So far:
+
+GUI -https://www.wxwidgets.org/ 
+- cross platform
+- need to do more reading to tell if will work for application
+
+user info :
+- probably will store info in a json or xml file along side source code
+
+Games: 
+- TBD, still reading into different options
+
+
+
+------- notes -------
+Maybe focus on game rather than launcher, get gui going, 
+get a gui going, display simple info, maybe a enter button that doesn’t lead anywhere at the moment
+partial front end, move to functional back end, finish front end (?)
+
+Increments is key
+develop animation cycles, finished working alpha or expo demo ready to go. 
+"Splash screen"? "Maybe some moving parts"
+Create a checklist, keep progress going, get a goal!
+incremental is good, 
+SFML?
+
+
+
+Clion w/ SFML - https://www.youtube.com/watch?v=BILAqQ-ZFDA 
+Write to file with vectors - https://web.microsoftstream.com/video/78572916-75e0-4a5c-9ead-bac3e92b562e
+
+
+G++ terminal run command with libraries and output name change:
+g++ -std=c++17 test.cpp -lsfml-graphics -lsfml-window -lsfml-system -o project.out
