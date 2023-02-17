@@ -11,15 +11,24 @@ Info: Assignment 3 - gradeFunction.hpp
 #include <iostream>
 #include <math.h>
 
-// student struct
-struct Student {
-    std::string grade_level;
-    std::string name; 
-    int final_grade;
-    char final_letter_grade;
-    std::array <int, 11> grade_array;
-};
+// functions to add data to the struct instance
+void add_name(std::string);
+void add_grade_level(std::string);
+void add_final_grade(int);
+void add_final_letter_grade(char);
+void add_to_grade_array(int, int);
 
+
+// functions to return data from struct members
+std::string get_name();
+std::string get_grade_level();
+int get_final_grade();
+char get_final_letter_grade();
+int get_average_grade();
+int get_grade_array_at_index(int);
+int get_grade_array_size();
+
+// functions to handle logic and math
 std::string display_and_collect(std::string);
 void quit_grading (int);
 int get_grade ();
