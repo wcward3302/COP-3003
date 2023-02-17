@@ -6,40 +6,6 @@ Info: Assignment 3 - gradeFunction.cpp
 
 #include "gradeFunction.hpp"
 
-// void setting data functions
-void STUDENT::add_name(std::string full_name){
-    name = full_name;
-}
-
-void STUDENT::add_grade_level(std::string x_grade_level){
-    grade_level = x_grade_level;
-}
-
-void STUDENT::add_final_grade(int x_final_grade){
-    final_grade = x_final_grade;
-}
-
-void STUDENT::add_final_letter_grade(char x_final_grade_letter){
-    final_letter_grade = x_final_grade_letter;
-}
-
-// return info functions
-std::string STUDENT::get_name(){
-    return name;
-}
-
-std::string STUDENT::get_grade_level(){
-    return grade_level;
-}
-
-int STUDENT::get_final_grade(){
-    return final_grade;
-}
-
-char STUDENT::get_final_letter_grade(){
-    return final_letter_grade;
-}
-
 // new function to display message and collect input from user 
 std::string display_and_collect(std::string message){
     std::string input;
