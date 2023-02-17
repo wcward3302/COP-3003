@@ -6,21 +6,22 @@ Info: Assignment 3 - gradeFunction.cpp
 
 #include "gradeFunction.hpp"
 
+std::array <int, 11> grade_array;
+
 // student struct
 struct Student {
     std::string grade_level;
     std::string name; 
     int final_grade;
     char final_letter_grade;
-    std::array <int, 11> grade_array;
 };
 
-// struct instance
+// Student struct instance
 Student student;
 
 // non-member functions to add and view struct members
 
-// Not much here, functions do as their names imply, adding data to a given struct member
+// Takes passed data and inserts into struct instance
 void add_name(std::string x_name){
     student.name = x_name;    
 }
@@ -38,11 +39,11 @@ void add_final_letter_grade(char x_final_letter_grade){
 }
 
 void add_to_grade_array(int index, int value){
-    student.grade_array[index] = value;
+    grade_array[index] = value;
 }
 
 
-// much like the above functions, these do as sames suggest. Return data from a selected struct member
+// Similar to the above functions, returning data from struct instance
 std::string get_name(){
     return student.name;
 }
@@ -60,11 +61,11 @@ char get_final_letter_grade(){
 }
 
 int get_grade_array_at_index(int index){
-    return student.grade_array[index];
+    return grade_array[index];
 }
 
 int get_grade_array_size(){
-    return student.grade_array.size();
+    return grade_array.size();
 }
 
 // new functions
@@ -72,8 +73,8 @@ int get_grade_array_size(){
 // function to sort array, use get_average, and then return the average
 int get_average_grade(){
     // sort the array smallest to largest
-    std::sort(student.grade_array.begin(), student.grade_array.end());
-    student.final_grade = get_average(student.grade_array);
+    std::sort(grade_array.begin(), grade_array.end());
+    student.final_grade = get_average(grade_array);
 
     return student.final_grade;
 }
@@ -87,7 +88,6 @@ std::string display_and_collect(std::string message){
     return input;
 }
 
-
 // functions from previous assignment
 
 // quit grading based on user input
@@ -95,17 +95,17 @@ void quit_grading (int x){
 
     // switch based on input from main, once finished, the program will exit
     switch (x){
-    case -1:
+    case 1:
         // reason -1
-        std::cout << "an error has occurred, please try again.\n";
+        std::cout << "\nAn error has occurred, please try again.\n\n";
         break;
     case 0:
         // reason 0, terminate
-        std::cout << "Thank you for using our product!\n";
+        std::cout << "\nThank you for using our product!\n\n";
         exit (1);
-    case 1:
+    case -1:
         // reason 1
-        std::cout << "Sorry you had to quit early. Thank you for using out product!\n";
+        std::cout << "\nSorry you had to quit early. Thank you for using out product!\n\n";
         exit (1);
         break;
     default: // default case just skips the switch
@@ -125,16 +125,23 @@ int get_grade (){
         std::cout << "Enter grade: ";
         std::cin >> user_input;
 
-        // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
-        if(user_input >= 0 && user_input <= 100 && std::cin.good()){ 
-            user_input_valid = true;
+        // if user inputs -1, code exits
+        if (user_input == -1){
+            quit_grading(-1);
         }
 
-        // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
         else{
-            std::cout << "please enter a valid response (0-100)\n";
-            std::cin.clear();
-            std::cin.ignore(100,'\n');
+            // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
+            if(user_input >= 0 && user_input <= 100 && std::cin.good()){ 
+                user_input_valid = true;
+            }
+
+            // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
+            else{
+                std::cout << "please enter a valid response (0-100)\n";
+                std::cin.clear();
+                std::cin.ignore(100,'\n');
+            }
         }
     }
 
