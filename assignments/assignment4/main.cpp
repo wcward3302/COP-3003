@@ -81,7 +81,7 @@ int main(){
 
 
     // end message
-    std::cout << "Thank you " << get_name() << ", the final grade for semester is " << get_final_letter_grade() << " at " << get_final_grade() << "\n";
+    std::cout << "Thank you " << get_name() << ", the final grade for semester is " << get_final_letter_grade() << " at " << get_final_grade() << "\n\n";
     
     quit_grading(0);
 }

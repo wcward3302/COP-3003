@@ -31,6 +31,7 @@ int get_grade_array_size();
 // functions to handle logic and math
 std::string display_and_collect(std::string);
 void quit_grading (int);
+bool is_valid(int, int, int);
 int get_grade ();
 int get_average (std::array <int, 11> );
 

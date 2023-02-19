@@ -68,7 +68,7 @@ int get_grade_array_size(){
     return grade_array.size();
 }
 
-// new functions
+// ----------------------------------- new functions -----------------------------------
 
 // function to sort array, use get_average, and then return the average
 int get_average_grade(){
@@ -88,7 +88,25 @@ std::string display_and_collect(std::string message){
     return input;
 }
 
-// functions from previous assignment
+// check if input is valid, repeat until true. Can now use to check future inputs between min and max
+bool is_valid(int input_number, int min, int max){
+
+        // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
+        if(input_number >= min && input_number <= max && std::cin.good()){ 
+            return true;
+        }
+
+        // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
+        else{
+            std::cout << "please enter a valid response (" << min << " - " << max << ")\n";
+            std::cin.clear();
+            std::cin.ignore(100,'\n');
+            return false;
+        }
+}
+
+
+// ----------------------------------- functions from previous assignment -----------------------------------
 
 // quit grading based on user input
 void quit_grading (int x){
@@ -113,6 +131,7 @@ void quit_grading (int x){
     }
 }
 
+
 // is called to get a grade, handles input and validation before returning value
 int get_grade (){
 
@@ -130,19 +149,12 @@ int get_grade (){
             quit_grading(-1);
         }
 
-        else{
-            // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
-            if(user_input >= 0 && user_input <= 100 && std::cin.good()){ 
-                user_input_valid = true;
-            }
-
-            // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
-            else{
-                std::cout << "please enter a valid response (0-100)\n";
-                std::cin.clear();
-                std::cin.ignore(100,'\n');
-            }
+        // if user input is checked to be valid, break from while loop
+        else if (is_valid(user_input, 0, 100)){
+            user_input_valid = true;
         }
+        
+        // if user_input_valid is not made true by this point, keep looping until true
     }
 
     // return the user input once validated
