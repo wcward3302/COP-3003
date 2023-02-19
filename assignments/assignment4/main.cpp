@@ -16,7 +16,7 @@ int main(){
     int loop_counter = 0, average_grade = 0;
     std::string name, grade_level;
 
-    std::cout << "\n----------------------------------------------------------------------------\n\n";
+    std::cout << "\n--------------------------------------------------------------------------------------------------------------------------\n\n";
 
     // NEW with this update - Function that will display provided message, collect and then return input!
     std::string get_name_message = "Please enter your name: ";
@@ -30,7 +30,7 @@ int main(){
     grade_level = display_and_collect(get_grade_level_message);
     add_grade_level(grade_level);
 
-    std::cout << "\n----------------------------------------------------------------------------\n\n";
+    std::cout << "\n--------------------------------------------------------------------------------------------------------------------------\n\n";
 
 
     // loop to collect all grades with get_grade input function (validation inside function)
@@ -40,7 +40,7 @@ int main(){
         loop_counter++;
     }
 
-    std::cout << "\n----------------------------------------------------------------------------\n\n";
+    std::cout << "\n--------------------------------------------------------------------------------------------------------------------------\n\n";
     
     // sort the array to make 0 element lowest grade and print
     std::cout << "Grades are\t";
@@ -56,7 +56,7 @@ int main(){
     std::cout << "\n\nLowest grade to be dropped = " << get_grade_array_at_index(0);
     std::cout << "\n\nAverage after dropping lowest grade is " << get_final_grade();
 
-    std::cout << "\n\n----------------------------------------------------------------------------\n\n";
+    std::cout << "\n\n--------------------------------------------------------------------------------------------------------------------------\n\n";
 
     // enter switch statement, add grade letter to student based on average grade
     switch (average_grade)
@@ -81,7 +81,7 @@ int main(){
 
 
     // end message
-    std::cout << "Thank you " << get_name() << ", the final grade for semester is " << get_final_letter_grade() << " at " << get_final_grade() << "\n\n";
+    std::cout << "Thank you " << get_name() << ", the final grade for semester is " << get_final_letter_grade() << " at " << get_final_grade() << "\n";
     
     quit_grading(0);
 }

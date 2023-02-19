@@ -32,6 +32,6 @@ int get_grade_array_size();
 std::string display_and_collect(std::string);
 void quit_grading (int);
 int get_grade ();
-int get_average (std::array <int, 11> grade_array);
+int get_average (std::array <int, 11> );
 
 #endif
