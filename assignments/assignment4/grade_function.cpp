@@ -2,10 +2,14 @@
 Name: William Ward
 Course: COP3003 (CRN15015) - Programming II
 Info: Assignment 3 - gradeFunction.cpp
+
+defines all functions from .hpp, contains struct, grade_array, and handles all math / logic for assignment 4
+
 */
 
-#include "gradeFunction.hpp"
+#include "grade_function.hpp"
 
+// placing array here, does not need to be accessed by main.cpp
 std::array <int, 11> grade_array;
 
 // student struct
@@ -16,10 +20,10 @@ struct Student {
     char final_letter_grade;
 };
 
-// Student struct instance
+// Student struct instance for grade_function.cpp
 Student student;
 
-// non-member functions to add and view struct members
+// ----------------------------------- struct add / access functions -----------------------------------
 
 // Takes passed data and inserts into struct instance
 void add_name(std::string x_name){
@@ -150,7 +154,7 @@ int get_grade (){
         }
 
         // if user input is checked to be valid, break from while loop
-        else if (is_valid(user_input, 0, 100)){
+        else if (is_valid(user_input, 0, 100)){ // uses new "is_valid()" function to check validity!
             user_input_valid = true;
         }
         

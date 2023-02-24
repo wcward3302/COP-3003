@@ -2,12 +2,14 @@
 Name: William Ward
 Course: COP3003 (CRN15015) - Programming II
 Info: Assignment 3 - main.cpp
+
+main.cpp will call all functions related to assignment, pass info from user to functions, make output decent looking (relatively speaking)
 */
 
 #include <string>
 #include <array>
 #include <iostream>
-#include "gradeFunction.hpp"
+#include "grade_function.hpp"
 
 int main(){
 

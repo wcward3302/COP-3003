@@ -2,9 +2,11 @@
 Name: William Ward
 Course: COP3003 (CRN15015) - Programming II
 Info: Assignment 3 - gradeFunction.hpp
+
+grade_function.hpp hold all prototypes and library includes for both .cpp's relating to assignment
 */
-#ifndef GRADEFUNCTION
-#define GRADEFUNCTION
+#ifndef GRADE_FUNCTION
+#define GRADE_FUNCTION
 
 #include <string>
 #include <array>
