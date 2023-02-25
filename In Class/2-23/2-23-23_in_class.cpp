@@ -35,6 +35,10 @@ void Book::get_all(){
 
 int main(){
     Book book ("x", "x", 5);
+    Book book2 Book();
+
+    Book book2 ();
 
     book.get_all();
+
 }
