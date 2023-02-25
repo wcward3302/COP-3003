@@ -6,30 +6,44 @@ Move our grade code to a Class should have:
     Move other functions and adjust to work in class
 
 */
+
 #include <string>
 #include <array>
 #include <iostream>
+#include <math.h>
 
 using std::string;
-using std::cout;
 
 class Grades {
 public:
     int lowest_grade;
     std::array <int, 10> grade_array;
+    std::array <int, 11> temp_grade_array;
 
     Grades(){
         this->lowest_grade = 0;
         for (int x = 0; x < this->grade_array.size(); x++){
-            this->grade_array[x] = 90;
+            this->grade_array[x] = 0;
         }
     }
 
+    int get_lowest_grade(){
+        return this->lowest_grade;
+    }
+
+    std::array <int, 10> get_grade_array(){
+        return this->grade_array;
+    }
+
     void display_grades(){
+
+        std::cout << "Lowest grade is " << this->lowest_grade << "\n";
+
         for (int x = 0; x < this->grade_array.size(); x++){
-            std::cout << this->grade_array[x] << "\t";
+            std::cout << "Grade " << x + 1 << " = " << this->grade_array[x] << "\n";
         }
     }
+
     int get_average(){
         int sum =0, average = 0;
 
@@ -39,14 +53,20 @@ public:
 
         average = sum / this->grade_array.size();
 
-        return average + 1;
+        return average;
     }
 
+    void set_grades(std::array <int, 11> user_input_array){
 
+        std::sort(user_input_array.begin(), user_input_array.end());
+
+        this->lowest_grade = user_input_array[0];
+
+        for(int x = 1; x < user_input_array.size(); x++){
+            this->grade_array[x-1] = user_input_array[x];
+        }
+    }
 };
-
-
-
 
 class Student {
 private:
@@ -95,6 +115,22 @@ public:
     string get_major(){
         return this->major;
     }
+
+    void print_info(){
+        std::cout << this->get_name() << "\n";
+        std::cout << this->get_grade_level() << "\n";
+        std::cout << this->get_major() << "\n";
+    }
+
+    void update_data(){
+        string user_grade_level, user_major;
+        std::cout << "updating information\n\n";
+        std::cout << "Enter grade level: ";
+        std::cin >> user_grade_level;
+        std::cout << "Enter major: ";
+        std::cin >> user_major;
+
+        this->grade_level = user_grade_level;
+        this->major = user_major;
+    }
 };
-
-
