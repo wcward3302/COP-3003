@@ -1,65 +1,69 @@
 /*
-The main program should now
-    instance the Student class and assignments structure
-    get the student's name and set it
-    display the default gradelevel and major (from the class) and ask if this is correct
-        if its not get new values for them and set it
-    get all the grades as normally and calculate as normally
-        only now we use the structure to see the lowest grade and check directly against that record
+1. William Ward
+2. CRN 15050 - COP3303
+3. Assignment 5
 */
 
 #include <iostream>
-#include "grade_class.cpp"
-#include "student_class.cpp"
 
+#include "grade_class.cpp"
+
+//--------------------------------------------Main Function--------------------------------------------//
 
 int main(){
+    // create class instances
     Student student = Student();
+    Grades grade = Grades();
 
-    std::string name, yes_no_input; 
+    std::string yes_no_check1, yes_no_check2, name;
 
-    std::cout << "\n----------------------------------------------------------------------------------\n";
-    std::cout << "Enter name: ";
-    std::getline(std::cin, name);
+    std::cout << "\n-------------------------------------------Section 1--------------------------------------------\n";
 
+    // get user name
+    std::cout << "\nPlease enter your name: ";
+    std::getline (std::cin, name);
+
+    // insert name into student object
     student.set_name(name);
-    
-    std::cout << "\nIs the following information correct?\n";
+
+    // display current info and ask if user wants to update
+    std::cout << "\nIs the following information correct?\n\n";
     student.print_info();
+    std::cout << "\nWould you like to update the information? Yes to update, No to continue\nResponse: ";
+    std::getline(std::cin, yes_no_check1);
 
-    std::cout << "If correct, type Yes: ";
-    std::getline(std::cin, yes_no_input);
-
-    if(yes_no_input[0] != 'Y' || yes_no_input[0] != 'Y'){
+    // if first char of input is Y, call update info function to collect the values the user has not provided yet
+    if (yes_no_check1[0] == 'Y' || yes_no_check1[0] == 'y'){
         student.update_data();
-    }
-
-    std::cout << "Current information:\n\n";
-    student.print_info();
-    
-    std::cout << "\n----------------------------------------------------------------------------------\n";
-    std::cout << "Enter grades\nLowest score will be dropped\n\n";
-
-    Grades grades = Grades();
-
-    grades.collect_grade_array();
-    grades.set_grades();
-
-
-    std::cout << "\n----------------------------------------------------------------------------------\n";
-    
-    
-    std::cout << "Would you like to see all of the entered grades? (Y or N): ";
-    std::cin >> yes_no_input;
-
-    if(yes_no_input[0] == 'Y' || yes_no_input[0] == 'Y'){
-        grades.display_grades();
+        // display updated info
+        std::cout << "\n\nUpdated information: \n";
+        student.print_info();
     }
 
 
-    std::cout << "Thank you " << student.get_name() << ", the final grade for semester is " << grades.get_average() << " at " << grades.get_grade_letter(grades.get_average()) << "\n\n";
+    std::cout << "\n-------------------------------------------Section 2--------------------------------------------\n";
 
-    return 0;
+    // get grades from user. Call collect grade array function, will loop and get grades w/ valid checking
+    std::cout << "\nPlease enter your grades. (-1 to quit)\n";
+    grade.collect_grade_array();
+
+    // user input stored in temp array, this will put top 10 in grade array and store lowest in lowest grade member
+    grade.set_grades();
+
+    // ask if user wants to see the grade array
+    std::cout << "\nWould you like to see your grades without the lowest score? (YES or NO)\nResponse: ";
+    //std::getline(std::cin, yes_no_check2);
+    std::cin >> yes_no_check2;
+
+    // same as the above y/n check
+    if (yes_no_check2[0] == 'Y' || yes_no_check2[0] == 'y'){
+        grade.display_grades();
+    }
+
+    // display exit message
+    std::cout << "\n\nThank you " << student.get_name() << ", your final average grade is " << grade.get_average() << " with a letter grade of " << grade.get_grade_letter(grade.get_average()) << "\n";
+
+    grade.quit_grading(0);
 }
 
 
