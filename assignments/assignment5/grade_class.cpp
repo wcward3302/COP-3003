@@ -7,19 +7,21 @@ Move our grade code to a Class should have:
 
 */
 
-#include <string>
 #include <array>
 #include <iostream>
 #include <math.h>
 
-using std::string;
 
 class Grades {
-public:
+private:
+    // private class members
     int lowest_grade;
     std::array <int, 10> grade_array;
     std::array <int, 11> temp_grade_array;
 
+public:
+    // made all functions public for main to access
+    // default constructor
     Grades(){
         this->lowest_grade = 0;
         for (int x = 0; x < this->grade_array.size(); x++){
@@ -27,6 +29,7 @@ public:
         }
     }
 
+    // getters and setters
     int get_lowest_grade(){
         return this->lowest_grade;
     }
@@ -35,6 +38,7 @@ public:
         return this->grade_array;
     }
 
+    // function to display grade array
     void display_grades(){
 
         std::cout << "Lowest grade is " << this->lowest_grade << "\n";
@@ -44,6 +48,7 @@ public:
         }
     }
 
+    // no member for average, so this function takes member array and return the average
     int get_average(){
         int sum =0, average = 0;
 
@@ -56,81 +61,118 @@ public:
         return average;
     }
 
-    void set_grades(std::array <int, 11> user_input_array){
+    // takes the temp array and inserts top 10 into grade array and lowest into lowest grade member
+    void set_grades(){
 
-        std::sort(user_input_array.begin(), user_input_array.end());
+        std::sort(this->temp_grade_array.begin(), this->temp_grade_array.end());
 
-        this->lowest_grade = user_input_array[0];
+        this->lowest_grade = this->temp_grade_array[0];
 
-        for(int x = 1; x < user_input_array.size(); x++){
-            this->grade_array[x-1] = user_input_array[x];
+        for(int x = 1; x < this->temp_grade_array.size(); x++){
+            this->grade_array[x-1] = this->temp_grade_array[x];
         }
     }
+
+    // quit grading based on user input
+    void quit_grading (int x){
+
+        // switch based on input from main, once finished, the program will exit
+        switch (x){
+        case 1:
+            // reason -1
+            std::cout << "\nAn error has occurred, please try again.\n\n";
+            break;
+        case 0:
+            // reason 0, terminate
+            std::cout << "\nThank you for using our product!\n\n";
+            exit (1);
+        case -1:
+            // reason 1
+            std::cout << "\nSorry you had to quit early. Thank you for using out product!\n\n";
+            exit (1);
+            break;
+        default: // default case just skips the switch
+            break;
+        }
+    }
+
+
+    // check if input is valid, repeat until true. Can now use to check future inputs between min and max
+    bool is_valid(int input_number, int min, int max){
+
+            // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
+            if(input_number >= min && input_number <= max && std::cin.good()){ 
+                return true;
+            }
+
+            // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
+            else{
+                std::cout << "please enter a valid response (" << min << " - " << max << ")\n";
+                std::cin.clear();
+                std::cin.ignore(100,'\n');
+                return false;
+            }
+    }
+
+    // is called to get a grade, handles input and validation before returning value
+    int get_grade (){
+
+        // initialize variables
+        float user_input = 0;
+        bool user_input_valid = false;
+
+        // loop will be false until user input is validated and passed true flag
+        while(!user_input_valid){ 
+            std::cout << "Enter grade: ";
+            std::cin >> user_input;
+
+            // if user inputs -1, code exits
+            if (user_input == -1){
+                quit_grading(-1);
+            }
+
+            // if user input is checked to be valid, break from while loop
+            else if (is_valid(user_input, 0, 100)){ // uses new "is_valid()" function to check validity!
+                user_input_valid = true;
+            }
+            
+            // if user_input_valid is not made true by this point, keep looping until true
+        }
+
+        // return the user input once validated
+        return user_input;
+    }
+
+    // call once to collect all grades consecutivly
+    void collect_grade_array(){
+        for (int x = 0; x <= 11; x++){
+            this->temp_grade_array[x] = get_grade();
+        } 
+    }
+
+    char get_grade_letter(int average_grade){
+        // enter switch statement, add grade letter to student based on average grade
+        switch (average_grade)
+        {
+            // case x .... y will check if average_of_grades is in a range and enter a case accordingly. 
+            case 90 ... 100: 
+                return 'A';
+                break;
+            case 80 ... 89:
+                return 'B';
+                break;
+            case 70 ... 79:
+                return 'C';
+                break;
+            case 60 ... 69:
+                return 'D';
+                break;
+            default:
+                return 'F';
+                break;
+        }
+    }
+
+
 };
 
-class Student {
-private:
-    // class members
-    string name;
-    string grade_level;
-    string major;
-
-public:
-    // default constructor
-    Student(){
-        this->name = "no_name";
-        this->grade_level = "Sophomore";
-        this->major = "computer science";
-    }
-
-    // overloaded constructor
-    Student(string name, string grade_level, string major){
-        this->name = name;
-        this->grade_level = grade_level;
-        this->major = major;
-    }
-
-
-    // member functions
-    void set_name(string name){
-        this->name = name;
-    }
-
-    void set_grade_level(string grade_level){
-        this->grade_level = grade_level;
-    }
-
-    void set_major(string major){
-        this->major = major;
-    }
-
-    string get_name(){
-        return this->name;
-    }
-
-    string get_grade_level(){
-        return this->grade_level;
-    }
-
-    string get_major(){
-        return this->major;
-    }
-
-    void print_info(){
-        std::cout << this->get_name() << "\n";
-        std::cout << this->get_grade_level() << "\n";
-        std::cout << this->get_major() << "\n";
-    }
-
-    void update_data(){
-        string user_grade_level, user_major;
-        std::cout << "updating information\n\n";
-        std::cout << "Enter grade level: ";
-        std::cin >> user_grade_level;
-        std::cout << "Enter major: ";
-        std::cin >> user_major;
-
-        this->grade_level = user_grade_level;
-        this->major = user_major;
-    }
-};

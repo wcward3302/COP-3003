@@ -10,18 +10,13 @@ The main program should now
 
 #include <iostream>
 #include "grade_class.cpp"
-using std::string;
-
-void quit_grading (int);
-bool is_valid(int, int, int);
-int get_grade ();
+#include "student_class.cpp"
 
 
 int main(){
     Student student = Student();
 
-    string name, yes_no_input; 
-    std::array <int, 11> grade_array;
+    std::string name, yes_no_input; 
 
     std::cout << "\n----------------------------------------------------------------------------------\n";
     std::cout << "Enter name: ";
@@ -47,12 +42,9 @@ int main(){
 
     Grades grades = Grades();
 
-    for (int x = 0; x <= 11; x++){
-        grade_array[x] = get_grade();
-    } 
+    grades.collect_grade_array();
+    grades.set_grades();
 
-
-    grades.set_grades(grade_array);
 
     std::cout << "\n----------------------------------------------------------------------------------\n";
     
@@ -64,78 +56,11 @@ int main(){
         grades.display_grades();
     }
 
-    std::cout << "\nAverage = " << grades.get_average() << "\n";
-    std::cout << "\nLowest is " << grades.get_lowest_grade() << "\n";
+
+    std::cout << "Thank you " << student.get_name() << ", the final grade for semester is " << grades.get_average() << " at " << grades.get_grade_letter(grades.get_average()) << "\n\n";
 
     return 0;
 }
 
 
-// quit grading based on user input
-void quit_grading (int x){
 
-    // switch based on input from main, once finished, the program will exit
-    switch (x){
-    case 1:
-        // reason -1
-        std::cout << "\nAn error has occurred, please try again.\n\n";
-        break;
-    case 0:
-        // reason 0, terminate
-        std::cout << "\nThank you for using our product!\n\n";
-        exit (1);
-    case -1:
-        // reason 1
-        std::cout << "\nSorry you had to quit early. Thank you for using out product!\n\n";
-        exit (1);
-        break;
-    default: // default case just skips the switch
-        break;
-    }
-}
-
-// check if input is valid, repeat until true. Can now use to check future inputs between min and max
-bool is_valid(int input_number, int min, int max){
-
-        // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
-        if(input_number >= min && input_number <= max && std::cin.good()){ 
-            return true;
-        }
-
-        // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
-        else{
-            std::cout << "please enter a valid response (" << min << " - " << max << ")\n";
-            std::cin.clear();
-            std::cin.ignore(100,'\n');
-            return false;
-        }
-}
-
-// is called to get a grade, handles input and validation before returning value
-int get_grade (){
-
-    // initialize variables
-    float user_input = 0;
-    bool user_input_valid = false;
-
-    // loop will be false until user input is validated and passed true flag
-    while(!user_input_valid){ 
-        std::cout << "Enter grade: ";
-        std::cin >> user_input;
-
-        // if user inputs -1, code exits
-        if (user_input == -1){
-            quit_grading(-1);
-        }
-
-        // if user input is checked to be valid, break from while loop
-        else if (is_valid(user_input, 0, 100)){ // uses new "is_valid()" function to check validity!
-            user_input_valid = true;
-        }
-        
-        // if user_input_valid is not made true by this point, keep looping until true
-    }
-
-    // return the user input once validated
-    return user_input;
-}
