@@ -5,7 +5,6 @@
 */
 
 #include <iostream>
-
 #include "grade_class.cpp"
 
 //--------------------------------------------Main Function--------------------------------------------//
@@ -45,14 +44,10 @@ int main(){
 
     // get grades from user. Call collect grade array function, will loop and get grades w/ valid checking
     std::cout << "\nPlease enter your grades. (-1 to quit)\n";
-    grade.collect_grade_array();
-
-    // user input stored in temp array, this will put top 10 in grade array and store lowest in lowest grade member
-    grade.set_grades();
-
+    grade.get_grades();
     // ask if user wants to see the grade array
-    std::cout << "\nWould you like to see your grades without the lowest score? (YES or NO)\nResponse: ";
-    //std::getline(std::cin, yes_no_check2);
+
+    std::cout << "Show all grades? (Yes or No): ";
     std::cin >> yes_no_check2;
 
     // same as the above y/n check
@@ -63,7 +58,7 @@ int main(){
     // display exit message
     std::cout << "\n\nThank you " << student.get_name() << ", your final average grade is " << grade.get_average() << " with a letter grade of " << grade.get_grade_letter(grade.get_average()) << "\n";
 
-    grade.quit_grading(0);
+    //grade.quit_grading(0);
 }
 
 

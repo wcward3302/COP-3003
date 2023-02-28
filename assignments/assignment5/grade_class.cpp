@@ -15,13 +15,12 @@ private:
     // private class members
     int lowest_grade;
     std::array <int, 10> grade_array;
-    std::array <int, 11> temp_grade_array;
 
 public:
     // made all functions public for main to access
     // default constructor
     Grades(){
-        this->lowest_grade = 0;
+        this->lowest_grade = -2;
         for (int x = 0; x < this->grade_array.size(); x++){
             this->grade_array[x] = 0;
         }
@@ -42,32 +41,7 @@ public:
         std::cout << "Lowest grade is " << this->lowest_grade << "\n";
 
         for (int x = 0; x < this->grade_array.size(); x++){
-            std::cout << "Grade " << x + 1 << " = " << this->grade_array[x] << "\n";
-        }
-    }
-
-    // no member for average, so this function takes member array and return the average
-    int get_average(){
-        int sum =0, average = 0;
-
-        for (int x = 0; x < this->grade_array.size(); x++){
-            sum = sum + this->grade_array[x];
-        }
-
-        average = sum / this->grade_array.size();
-
-        return average;
-    }
-
-    // takes the temp array and inserts top 10 into grade array and lowest into lowest grade member
-    void set_grades(){
-
-        std::sort(this->temp_grade_array.begin(), this->temp_grade_array.end());
-
-        this->lowest_grade = this->temp_grade_array[0];
-
-        for(int x = 1; x < this->temp_grade_array.size(); x++){
-            this->grade_array[x-1] = this->temp_grade_array[x];
+            std::cout << "Grade " << x + 1 << " = " << this->grade_array[x] << "\t";
         }
     }
 
@@ -94,63 +68,70 @@ public:
         }
     }
 
+    // get grades is called, starts a loop, will auto add to array or lowest grade member
+    void get_grades(){
 
-    // check if input is valid, repeat until true. Can now use to check future inputs between min and max
-    bool is_valid(int input_number, int min, int max){
+        int counter = 0, input;
 
-            // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
-            if(input_number >= min && input_number <= max && std::cin.good()){ 
-                return true;
+        for (int x = 0; x < this->grade_array.size() + 1; x++){
+
+            bool valid_check = false;
+
+            while(!valid_check){
+                std::cout << "Please enter grade: ";
+                std::cin >> input;
+
+                // if the input is within range and the cin was not passed bad input, pass true and break from nested while loop
+                if(input >= 0 && input <= 100 && std::cin.good()){ 
+                    valid_check = true;
+                }
+
+                // if user wants to quit early
+                else if(input == -1){
+                    quit_grading(-1);
+                }
+
+                // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
+                else{
+                    std::cout << "please enter a valid response (" << 0 << " - " << 100 << ")\n";
+                    std::cin.clear();
+                    std::cin.ignore(100,'\n');
+                }
             }
 
-            // else, display a message, clear cin buffer and data, repeat loop until response is valid. Stay on target... 
+            // if lowest grade = -2, then this is first grade and should be lowest
+            if (this->lowest_grade == -2){
+                this->lowest_grade = input;
+            }
             else{
-                std::cout << "please enter a valid response (" << min << " - " << max << ")\n";
-                std::cin.clear();
-                std::cin.ignore(100,'\n');
-                return false;
+                // if lowest grade is larger than current grade, move LG to array, LG to current
+                if (this->lowest_grade > input){
+                    this->grade_array[x-1] = this->lowest_grade;
+                    this->lowest_grade = input;
+                }
+
+                // all else, add to the next spot in the array
+                else if(this->lowest_grade <= input){
+                    this->grade_array[x-1] = input;
+                }
             }
+        }
     }
 
-    // is called to get a grade, handles input and validation before returning value
-    int get_grade (){
-
-        // initialize variables
-        float user_input = 0;
-        bool user_input_valid = false;
-
-        // loop will be false until user input is validated and passed true flag
-        while(!user_input_valid){ 
-            std::cout << "Enter grade: ";
-            std::cin >> user_input;
-
-            // if user inputs -1, code exits
-            if (user_input == -1){
-                quit_grading(-1);
-            }
-
-            // if user input is checked to be valid, break from while loop
-            else if (is_valid(user_input, 0, 100)){ // uses new "is_valid()" function to check validity!
-                user_input_valid = true;
-            }
-            
-            // if user_input_valid is not made true by this point, keep looping until true
+    // returns the average by calculating sum of all elements in member array, returns value divided by size
+    int get_average(){
+        int sum, average;
+        for(int x = 0; x < this->grade_array.size(); x++){
+            sum = sum + this->grade_array[x];
         }
 
-        // return the user input once validated
-        return user_input;
+        average = sum / this->grade_array.size();
+        return average;
     }
 
-    // call once to collect all grades consecutivly
-    void collect_grade_array(){
-        for (int x = 0; x <= 11; x++){
-            this->temp_grade_array[x] = get_grade();
-        } 
-    }
-
-    char get_grade_letter(int average_grade){
-        // enter switch statement, add grade letter to student based on average grade
-        switch (average_grade)
+    // takes the final grade and returns a letter grade based on value
+    char get_grade_letter(int final_grade){
+        switch (final_grade)
         {
             // case x .... y will check if average_of_grades is in a range and enter a case accordingly. 
             case 90 ... 100: 
