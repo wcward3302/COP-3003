@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include "grade_class.cpp"
+#include "student_class.cpp"
 
 //--------------------------------------------Main Function--------------------------------------------//
 
@@ -47,7 +48,7 @@ int main(){
     grade.get_grades();
     // ask if user wants to see the grade array
 
-    std::cout << "Show all grades? (Yes or No): ";
+    std::cout << "\n\nShow all grades? (Yes or No): ";
     std::cin >> yes_no_check2;
 
     // same as the above y/n check
@@ -58,7 +59,7 @@ int main(){
     // display exit message
     std::cout << "\n\nThank you " << student.get_name() << ", your final average grade is " << grade.get_average() << " with a letter grade of " << grade.get_grade_letter(grade.get_average()) << "\n";
 
-    //grade.quit_grading(0);
+    grade.quit_grading(0);
 }
 
 
