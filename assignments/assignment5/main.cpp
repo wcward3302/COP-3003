@@ -53,7 +53,9 @@ int main(){
 
     // same as the above y/n check
     if (yes_no_check2[0] == 'Y' || yes_no_check2[0] == 'y'){
+        std::cout << "\n\n";
         grade.display_grades();
+        std::cout << "\n";
     }
 
     // display exit message
