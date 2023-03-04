@@ -1,0 +1,37 @@
+Our struct for assignments just isn't enough - time to refactor it into a full Class! But that's a big job so this sprint let's 
+just remove it and fix our first class, then next assignment - we'll start adding real gradebook and assignment classes!
+
+This iteration we will add a few items to our student class and remove our assignment struct (for now).
+
+Student changes:
+    Add 3 constructors (overload)
+        First should take a student name as a string only and set that based on passed (then set the defaults normally)
+        Second should take student name, grade level as a string, and major and set all of these based on the passed values
+        Third should take student name, grade level as an int, and major and set all of these based on the passed values
+            You will have to convert the int to an appropriate grade level
+    
+    2 private variables and 2 private functions needs to be added:
+        
+        Private validate_gradelevel() function
+            Returns True if gradelevel is correct, can use any of below options to check
+                US: "first year", "sophomore", "junior", "senior"
+                UK: "Year 10", "Year 11", "Lower 6th", "Upper 6th"
+                Ensure you lower case or upper case all letters before checking
+                You can use your own international or US grading levels as desired
+            Returns False if no match found which should cause the default to set
+        
+        Private convert_gradelevel() function
+            Will confirm gradelevel is appropriate (9th to 12th grade so 9-12)
+                If not returns lowest option (9th grade option)
+            Will use the same options as the validate_gradelevel function to pick the correct grade
+                These should not have to be rewritten and should use the same (shared) data structure
+                Easiest method for this involves simple arithmetic over a control flow
+        
+        Private variables: current_grades array (10) and lowest_grade
+            The grades are theirs, the assignments just record the possible 
+            Use these in main as we were using the structure (which we can now delete)
+    
+    Add encapsulation (access specifiers) as appropriate for all other items and remove getter and setters if needed:
+        student_name should just be a public variable and directly accessible
+        Others are for you to decide
+    Change Main as appropriate to use our new class and still function the same (abstraction is nice)
