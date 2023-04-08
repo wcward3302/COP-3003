@@ -161,7 +161,7 @@ int main (){
 
                 (*itr).move(-10, 0);
 
-				//(*itr).move(-(5 + ((game.frames / 750)*5)), 0);
+				//(*itr).move(-(5 + ((game.frames / 850)*5)), 0);
                 //std::cout << "Speed = " << 5 + ((game.frames / 750) * 5) << "\n";
 			}
         }
@@ -203,18 +203,8 @@ int main (){
             sf::Event event;
             while (window.pollEvent(event)){
                 
-
                 if (event.type == sf::Event::Closed){
                     window.close();
-                }
-
-                // move ship up or down based on input
-                else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up){
-                    ship.sprite.move(0, -30);
-                }
-
-                else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down){
-                    ship.sprite.move(0, 30);
                 }
 
                 else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
@@ -222,6 +212,18 @@ int main (){
                     game.score = 0;
                     walls.clear();
                     game.game_state = 0;
+                }
+
+                if (game.game_state == 0){
+
+                    // move ship up or down based on input
+                    if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up){
+                        ship.sprite.move(0, -30);
+                    }
+
+                    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down){
+                        ship.sprite.move(0, 30);
+                    }
                 }
             }
     
@@ -247,7 +249,6 @@ int main (){
         game.frames++;
 
     }
-
     return 0;
 }
 
