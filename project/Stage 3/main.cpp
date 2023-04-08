@@ -15,17 +15,24 @@ int main (){
     srand(time(0));
 
 
-    // create window with size of 1000 by 600, set framerate limit to 60fps, 
-    sf::RenderWindow window (sf::VideoMode(2000, 1600), "Test");
+    // create window with size of 1000 by 600, set framerate limit to 90fps, 
+    sf::RenderWindow window (sf::VideoMode(2400, 1400), "Test");
     window.setFramerateLimit(60);
 
 
-    // load exploding sound into buffer
+    // load sounds into buffer
     sf::SoundBuffer explode_buffer;
     sf::Sound explode;
     explode_buffer.loadFromFile("./Audio/explosion_x.wav");
     explode.setBuffer(explode_buffer);
 
+    sf::SoundBuffer buzz_buffer;
+    sf::Sound buzz;
+    buzz_buffer.loadFromFile("./Audio/buzz.wav");
+    buzz.setBuffer(buzz_buffer);
+
+
+    
 
     // struct to hold textures for rendering, can just do sprite.settexture(texture.)
     struct Textures {
@@ -44,8 +51,11 @@ int main (){
 
     // create ship instance, set intial position (1/4 hori, 1/2 vert)
     Ship ship = Ship();
-    ship.sprite.setPosition(250, 300);
+    ship.sprite.setPosition(250, 800);
 
+    // red outline around ship for testing
+    sf::RectangleShape border;
+    border.setFillColor(sf::Color::Red);
 
     // create a vector for the walls, so we can add and delete easily
     std::vector <sf::Sprite> walls;
@@ -54,6 +64,7 @@ int main (){
     // create Game class instance and update
     Game game = Game();
     game.background.setTexture(textures.background);
+    game.background.setScale(1.5, 1.5);
     game.font.loadFromFile("./Fonts/Menlo-Regular.ttf");
 
     game.score_text.setFont(game.font);
@@ -71,73 +82,169 @@ int main (){
     while(window.isOpen()) {
 
 
-        // load ship sprite with initial texture
-        ship.sprite.setTexture(textures.ship[0]);
-
-
         // load texts with current score and high score, but need to to_string them to load
         game.score_text.setString(std::to_string(game.score));
         game.high_score_text.setString(std::to_string(game.high_score));
 
 
+        // load ship sprite with initial texture unless game over, then set ship to dead
+        if(game.game_state == 1){
+            ship.sprite.setTexture(textures.ship[1]);
+        }
+        else{
+            ship.sprite.setTexture(textures.ship[0]);
+        }
+        
 
         // track ship current position
         ship.x = ship.sprite.getPosition().x;
         ship.y = ship.sprite.getPosition().y;
-        ship.width = ship.sprite.getScale().x;
-        ship.height = ship.sprite.getScale().y;
+        ship.width = textures.ship->getSize().x;
+        ship.height =  textures.ship->getSize().y;
+        sf::Vector2f border_size (ship.width, ship.height);
+        border.setSize(border_size);
+        border.setPosition(ship.x - 3, ship.y - 3);
         
+
+        // if player goes out of bounds of screen
+        if (game.game_state == 0) {
+			if (ship.y < 0) {
+				ship.sprite.setPosition(250, 0);
+			} 
+            else if (ship.y + ship.height > 2000) {
+				game.game_state = 1;
+				explode.play();
+			}
+		}
+        
+
+        // get score
+		for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
+			if (game.game_state == 0 && (*itr).getPosition().x == 350) {
+				game.score++;
+				buzz.play();
+
+				if (game.score > game.high_score) {
+					game.high_score = game.score;
+				}
+
+				break;
+			}
+		}
 
 
         // generate a new set of walls every 150 frames
-        if (game.frames % 150 == 0){
+        if (game.frames % 300 == 0){
+
             // use random generator for heights but restrict them to be 2x ship height apart. 
-            int random_height = rand();
-            int gap = ship.sprite.getScale().y * 2;
+            int random_height = rand() % 850;
+            int gap = 400;
 
             sf::Sprite wall_lower;
             wall_lower.setTexture(textures.wall);
-            wall_lower.setPosition(1000, random_height + gap);
-            wall_lower.setScale(0.5, 0.5);
+            wall_lower.setPosition(2500, 0 - random_height);
 
             sf::Sprite wall_upper;
             wall_upper.setTexture(textures.wall);
-            wall_upper.setPosition(1000, random_height);
-            wall_upper.setScale(0.5, 0.5);
+            wall_upper.setPosition(2500, (0 - random_height) + textures.wall.getSize().y + gap);
 
-
-            std::cout << "wall gen\n";
             walls.push_back(wall_lower);
             walls.push_back(wall_upper);
             
         }
 
-        // check for keypresses to update ship position or restart
-        sf::Event event;
-        while (window.pollEvent(event)){
-            
 
-            if (event.type == sf::Event::Closed){
-                window.close();
-            }
-
-
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+        // move walls towards and past player
+        if(game.game_state != 1){
+            for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
                 
-            }
-
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-                
-            }
-
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
-                
-            }
+				(*itr).move(-(5 + ((game.frames / 750)*5)), 0);
+                std::cout << "Speed = " << 5 + ((game.frames / 750) * 5) << "\n";
+			}
         }
+
+
+        // collistion detection for game end
+        if (game.game_state == 0){
+            for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
+				
+                // variables for coordinates of walls
+                float wall_x, wall_y, wall_width, wall_height;
+
+
+                // create variables to pass to collision function for each of the walls generated
+                if((*itr).getScale().y > 0){
+                    wall_x = (*itr).getPosition().x;
+                    wall_y = (*itr).getPosition().y;
+                    wall_width = textures.wall.getSize().x;
+                    wall_height = textures.wall.getSize().y;
+                }
+                else{
+                    wall_width = (*itr).getPosition().x;
+                    wall_height = (*itr).getPosition().y;
+                    wall_x = (*itr).getScale().x;
+                    wall_y = (*itr).getScale().y;
+                }
+
+
+                // if collision is detected, set game to game over, explode
+                if(collision_detect(ship.x, ship.y, ship.width, ship.height, wall_x, wall_y, wall_width, wall_height)){
+                    game.game_state = 1;
+                    explode.play();
+                }
+			}
+        }
+
+
+        // check for keypresses to update ship position or restart
+            sf::Event event;
+            while (window.pollEvent(event)){
+                
+
+                if (event.type == sf::Event::Closed){
+                    window.close();
+                }
+
+                // move ship up or down based on input
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+                    ship.sprite.move(0, -30);
+                }
+
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+                    ship.sprite.move(0, 30);
+                }
+
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+                    ship.sprite.setPosition(250, 300);
+                    game.score = 0;
+                    walls.clear();
+                }
+            }
     
+        // clear screen, draw the background and ship sprite
+        window.clear();
+        window.draw(game.background);
+        window.draw(border);
+        window.draw(ship.sprite);
+        
+
+        // draw the walls
+        for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++){
+            window.draw(*itr);
+        }
+
+        // draw scores
+        window.draw(game.score_text);
+        window.draw(game.high_score_text);
+        
+
+        // diplay and count frames
+        window.display();
+        game.frames++;
+
     }
 
-
+    return 0;
 }
 
 
