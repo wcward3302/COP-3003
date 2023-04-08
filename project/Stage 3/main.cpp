@@ -51,7 +51,7 @@ int main (){
 
     // create ship instance, set intial position (1/4 hori, 1/2 vert)
     Ship ship = Ship();
-    ship.sprite.setPosition(250, 800);
+    ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship->getSize().x), (window.getSize().y / 2) - (textures.ship->getSize().y / 2));
 
     // red outline around ship for testing
     sf::RectangleShape border;
@@ -103,7 +103,7 @@ int main (){
         ship.height =  textures.ship->getSize().y;
         sf::Vector2f border_size (ship.width, ship.height);
         border.setSize(border_size);
-        border.setPosition(ship.x - 3, ship.y - 3);
+        border.setPosition(ship.x, ship.y);
         
 
         // if player goes out of bounds of screen
@@ -133,12 +133,12 @@ int main (){
 		}
 
 
-        // generate a new set of walls every 150 frames
-        if (game.frames % 300 == 0){
+        // generate a new set of walls every 200 frames
+        if (game.frames % 200 == 0){
 
             // use random generator for heights but restrict them to be 2x ship height apart. 
             int random_height = rand() % 850;
-            int gap = 400;
+            int gap = textures.ship->getSize().y * 1.5;
 
             sf::Sprite wall_lower;
             wall_lower.setTexture(textures.wall);
@@ -157,9 +157,12 @@ int main (){
         // move walls towards and past player
         if(game.game_state != 1){
             for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
-                
-				(*itr).move(-(5 + ((game.frames / 750)*5)), 0);
-                std::cout << "Speed = " << 5 + ((game.frames / 750) * 5) << "\n";
+
+
+                (*itr).move(-10, 0);
+
+				//(*itr).move(-(5 + ((game.frames / 750)*5)), 0);
+                //std::cout << "Speed = " << 5 + ((game.frames / 750) * 5) << "\n";
 			}
         }
 
@@ -206,18 +209,19 @@ int main (){
                 }
 
                 // move ship up or down based on input
-                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+                else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up){
                     ship.sprite.move(0, -30);
                 }
 
-                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+                else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down){
                     ship.sprite.move(0, 30);
                 }
 
                 else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-                    ship.sprite.setPosition(250, 300);
+                    ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship->getSize().x), (window.getSize().y / 2) - (textures.ship->getSize().y / 2));
                     game.score = 0;
                     walls.clear();
+                    game.game_state = 0;
                 }
             }
     

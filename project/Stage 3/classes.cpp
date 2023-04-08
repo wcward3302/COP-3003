@@ -11,6 +11,7 @@ public:
     double width;
 
     sf::Sprite sprite;
+
 };
 
 
