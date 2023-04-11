@@ -77,6 +77,11 @@ int main (){
     game.high_score_text.setCharacterSize(50);
     game.high_score_text.setPosition(30, 90);
 
+    game.enter_message_text.setFont(game.font);
+    game.enter_message_text.setFillColor(sf::Color::White);
+    game.enter_message_text.setCharacterSize(75);
+    game.enter_message_text.setPosition(window.getSize().x / 2 - (window.getSize().x / 4), window.getSize().y / 2 - (window.getSize().y / 4));
+
 
     // will loop so long as window is open. Handle rendering and movement here
     while(window.isOpen()) {
@@ -85,6 +90,7 @@ int main (){
         // load texts with current score and high score, but need to to_string them to load
         game.score_text.setString(std::to_string(game.score));
         game.high_score_text.setString(std::to_string(game.high_score));
+        game.enter_message_text.setString(game.enter_message);
 
 
         // load ship sprite with initial texture unless game over, then set ship to dead
@@ -153,16 +159,14 @@ int main (){
             
         }
 
+        int movement_factor = 1, speed;
 
         // move walls towards and past player
         if(game.game_state != 1){
             for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
 
-
                 (*itr).move(-10, 0);
 
-				//(*itr).move(-(5 + ((game.frames / 850)*5)), 0);
-                //std::cout << "Speed = " << 5 + ((game.frames / 750) * 5) << "\n";
 			}
         }
 
@@ -198,39 +202,45 @@ int main (){
 			}
         }
 
+        int direction = 0;
 
         // check for keypresses to update ship position or restart
-            sf::Event event;
-            while (window.pollEvent(event)){
-                
-                if (event.type == sf::Event::Closed){
-                    window.close();
+        sf::Event event;
+        while (window.pollEvent(event)){
+            
+            if (event.type == sf::Event::Closed){
+                window.close();
+            }
+
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+                ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship->getSize().x), (window.getSize().y / 2) - (textures.ship->getSize().y / 2));
+                game.score = 0;
+                walls.clear();
+                game.game_state = 0;
+            }
+
+            if (game.game_state == 0){
+                // keyboard input sets ships velocity which is always been applied, no input is 0 velocity
+                if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up){
+                    ship.velocity = 1; // velocity = up
                 }
 
-                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-                    ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship->getSize().x), (window.getSize().y / 2) - (textures.ship->getSize().y / 2));
-                    game.score = 0;
-                    walls.clear();
-                    game.game_state = 0;
+                else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down){
+                    ship.velocity = 2; // velocity = down
                 }
-
-                if (game.game_state == 0){
-
-                    // move ship up or down based on input
-                    if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up){
-                        ship.sprite.move(0, -30);
-                    }
-
-                    else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down){
-                        ship.sprite.move(0, 30);
-                    }
+                else{
+                    ship.velocity = 0; // velocity = 0
                 }
             }
+        }
     
         // clear screen, draw the background and ship sprite
         window.clear();
         window.draw(game.background);
         window.draw(border);
+
+        ship.update();
+
         window.draw(ship.sprite);
         
 
@@ -238,6 +248,11 @@ int main (){
         for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++){
             window.draw(*itr);
         }
+
+        if(game.frames < 150){
+            window.draw(game.enter_message_text);
+        }
+        
 
         // draw scores
         window.draw(game.score_text);
