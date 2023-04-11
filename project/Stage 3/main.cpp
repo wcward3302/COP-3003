@@ -126,14 +126,13 @@ int main (){
 
         // get score
 		for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
-			if (game.game_state == 0 && (*itr).getPosition().x == 350) {
+			if (game.game_state == 0 && (*itr).getPosition().x == 0 ){
 				game.score++;
 				buzz.play();
 
 				if (game.score > game.high_score) {
 					game.high_score = game.score;
 				}
-
 				break;
 			}
 		}
@@ -164,9 +163,12 @@ int main (){
         // move walls towards and past player
         if(game.game_state != 1){
             for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
-
+                
                 (*itr).move(-10, 0);
 
+
+                //(*itr).move(-(10 + (5 * (game.score / 10))), 0);
+                //std::cout << "Speed = " << (10 + (5 * (game.score / 5))) << "\n";
 			}
         }
 
@@ -239,11 +241,13 @@ int main (){
         window.draw(game.background);
         window.draw(border);
 
-        ship.update();
-
+        // using new funciton .update for sprite, which takes the velocity set via keyboard input and moves the position of the sprite. 
+        if(game.game_state == 0){
+            ship.update();
+        }
+        
         window.draw(ship.sprite);
         
-
         // draw the walls
         for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++){
             window.draw(*itr);
