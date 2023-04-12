@@ -1,7 +1,7 @@
 # COP-project-game
 Small time, not overly complex, basic game using C++ and SFML
 
-![screenshot](https://raw.githubusercontent.com/wcward3302/COP-3003/main/project/Stage%203/Documentation/Screenshot%202023-04-12%20at%205.38.07%20PM.png | width = 100)
+![screenshot](project/Stage 3/Documentation/Screenshot 2023-04-12 at 5.38.07 PM.png| width = 100)
 
 ## Note: 
 not in final state, some more finishing touches are required but it 95% complete.
