@@ -1,7 +1,7 @@
 # COP-project-game
 Small time, not overly complex, basic game using C++ and SFML
 
-![screenshot](https://marketplace.canva.com/EAFTQEWI-Ko/1/0/1600w/canva-black-sky-galaxy-stars-desktop-wallpaper-iWMZ0xN6KXs.jpg| width = 100)
+<img width="1190" alt="Screenshot 2023-04-12 at 5 38 07 PM" src="https://user-images.githubusercontent.com/122639149/231594834-812202ef-cf23-4302-9355-bfaf6c86af0d.png">
 
 ## Note: 
 not in final state, some more finishing touches are required but it 95% complete.
@@ -27,6 +27,6 @@ Yours truly
 
 ## How to run on MacOS
 
-- 'brew install sfml'
-- 'g++ main.cpp -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio'
-- './a.out'
+- brew install sfml
+- g++ main.cpp -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+- ./a.out
