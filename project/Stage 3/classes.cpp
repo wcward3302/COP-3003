@@ -12,6 +12,8 @@ public:
 
     sf::Sprite sprite;
 
+    Ship()=default;
+
     void update(){
         if (velocity == 1){
             sprite.move(0,-15);
@@ -42,5 +44,7 @@ public:
     sf::Text high_score_text;
     sf::Text enter_message_text;
     sf::Font font;
+
+    Game()=default;
 
 };
