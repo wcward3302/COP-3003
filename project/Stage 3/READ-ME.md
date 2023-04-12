@@ -1,6 +1,8 @@
 # COP-project-game
 Small time, not overly complex, basic game using C++ and SFML
 
+![screenshot](https://github.com/wcward3302/COP-3003/blob/main/project/Stage%203/Documentation/Screenshot%202023-04-12%20at%205.38.07%20PM.png | width = 100)
+
 ## Note: 
 not in final state, some more finishing touches are required but it 95% complete.
 still missing:
@@ -19,6 +21,9 @@ what initially started as an idea to create a game launcher with multiple differ
 - takes input from the keyboard to adjust velocity of the ship
 - generates and displays the walls at random heights
 - as player passes a pair of walls, score increases and high score is adjusted
+
+## Maintainers
+Yours truly
 
 ## How to run on MacOS
 
