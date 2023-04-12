@@ -13,7 +13,7 @@ still missing:
 ## For: COP-3003 course project
 
 ## Reason: 
-what initially started as an idea to create a game launcher with multiple different games, I decided early on that trying SFML with C++ would provide a greater challenge. So I came up witha goal for a game that almost all components I made myself. The ship and walls seen were drawn by yours truly. The only component sourced from the intenet is the sounds, the fonts, and the background. Everything else was made in house. 
+what initially started as an idea to create a game launcher with multiple different games, I decided early on that trying SFML with C++ would provide a greater challenge. So I came up witha goal for a game that almost all components I made myself. The ship and walls seen were drawn by yours truly. The only component sourced from the internet is the sounds, the fonts, and the background. Everything else was made in house. 
 
 ## Functionality: 
 - displays a window
