@@ -1,7 +1,7 @@
 # COP-project-game
 Small time, not overly complex, basic game using C++ and SFML
 
-![screenshot](project/Stage 3/Documentation/Screenshot 2023-04-12 at 5.38.07 PM.png| width = 100)
+![screenshot](https://marketplace.canva.com/EAFTQEWI-Ko/1/0/1600w/canva-black-sky-galaxy-stars-desktop-wallpaper-iWMZ0xN6KXs.jpg| width = 100)
 
 ## Note: 
 not in final state, some more finishing touches are required but it 95% complete.
