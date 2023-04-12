@@ -20,7 +20,7 @@ what initially started as an idea to create a game launcher with multiple differ
 - framerate locked at 60 frame/sec
 - takes input from the keyboard to adjust velocity of the ship
 - generates and displays the walls at random heights
-- as player passes a pair of walls, score increases and high score is adjusted
+- as player passes a pair of walls, score increases, and high score is adjusted
 
 ## Maintainers
 Yours truly
