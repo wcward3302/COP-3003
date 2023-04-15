@@ -2,8 +2,11 @@
 
 int main(){
 
+    // create object to work with
     BookFile books;
 
+    // read in file, split data, append to 2nd file, display contents of both
+    
     books.read_file("books.txt");
     books.split_data();
     books.append_correctedfile();
