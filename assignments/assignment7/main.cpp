@@ -2,8 +2,8 @@
 
 int main(){
 
-    // create object to work with
-    BookFile books;
+    // create class object with constructor
+    BookFile books = BookFile();
 
     // read in file, split data, append to 2nd file, display contents of both
     
