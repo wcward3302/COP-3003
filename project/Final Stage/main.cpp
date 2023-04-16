@@ -110,9 +110,9 @@ int main (){
         ship.y = ship.sprite.getPosition().y;
         ship.width = textures.ship->getSize().x;
         ship.height =  textures.ship->getSize().y;
-        sf::Vector2f border_size (ship.width, ship.height);
+        sf::Vector2f border_size (ship.width-150, ship.height);
         border.setSize(border_size);
-        border.setPosition(ship.x, ship.y);
+        border.setPosition(ship.x+150, ship.y);
         
 
         // if player goes out of bounds of screen
@@ -150,7 +150,7 @@ int main (){
 
             // use random generator for heights but restrict them to be 2x ship height apart. 
             int random_height = rand() % 850;
-            int gap = textures.ship->getSize().y * 1.5;
+            int gap = textures.ship->getSize().y * 2;
 
             sf::Sprite wall_lower;
             wall_lower.setTexture(textures.wall);
@@ -200,7 +200,7 @@ int main (){
                 }
 
                 // if collision is detected, set game to game over, explode
-                if(collision_detect(ship.x, ship.y, ship.width, ship.height, wall_x, wall_y, wall_width, wall_height)){
+                if(collision_detect(ship.x + 150, ship.y, ship.width-150, ship.height, wall_x, wall_y, wall_width, wall_height)){
                     game.game_state = 1;
                     explode.play();
                 }
