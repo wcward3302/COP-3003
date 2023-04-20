@@ -7,7 +7,6 @@
 #include "classes.cpp"
 
 
-bool collision_detect (float, float, float, float, float, float, float, float);
 
 int main (){
 
@@ -31,30 +30,36 @@ int main (){
     buzz_buffer.loadFromFile("./Audio/buzz.wav");
     buzz.setBuffer(buzz_buffer);
 
+    sf::SoundBuffer boo_buffer;
+    sf::Sound boo;
+    boo_buffer.loadFromFile("./Audio/boo.wav");
+    boo.setBuffer(boo_buffer);
+
 
     
 
     // struct to hold textures for rendering, can just do sprite.settexture(texture.)
     struct Textures {
-        sf::Texture ship[2]; // make ship have 2 textures, one for alive and one for dead
+        sf::Texture ship; // make ship have 2 textures, one for alive and one for dead
+        sf::Texture ship_dead;
         sf::Texture wall;
         sf::Texture background;
     } textures;
     
 
     // load all images into members of Textures struct
-    textures.ship[0].loadFromFile("./Images/ship.png");
-    textures.ship[1].loadFromFile("./Images/explosion.png");
+    textures.ship.loadFromFile("./Images/ship.png");
+    textures.ship_dead.loadFromFile("./Images/explosion.png");
     textures.wall.loadFromFile("./Images/walls.png");
     textures.background.loadFromFile("./Images/deathstar_surface.jpeg");
 
 
     // create ship instance, set intial position (1/4 hori, 1/2 vert)
     Ship ship = Ship();
-    ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship->getSize().x), (window.getSize().y / 2) - (textures.ship->getSize().y / 2));
-    ship.sprite.setTexture(textures.ship[0]);
-    ship.dead_sprite.setPosition((window.getSize().x + textures.ship[1].getSize().x + 1), (window.getSize().y + textures.ship[1].getSize().y + 1));
-    ship.dead_sprite.setTexture(textures.ship[1]);
+    ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship.getSize().x), (window.getSize().y / 2) - (textures.ship.getSize().y / 2));
+    ship.sprite.setTexture(textures.ship);
+    ship.dead_sprite.setPosition((window.getSize().x + textures.ship_dead.getSize().x + 1), (window.getSize().y + textures.ship_dead.getSize().y + 1));
+    ship.dead_sprite.setTexture(textures.ship_dead);
     ship.dead_sprite.setScale(0.5,0.5);
 
     // red outline around ship for testing
@@ -108,8 +113,10 @@ int main (){
         // track ship current position
         ship.x = ship.sprite.getPosition().x;
         ship.y = ship.sprite.getPosition().y;
-        ship.width = textures.ship->getSize().x;
-        ship.height =  textures.ship->getSize().y;
+
+        ship.width = textures.ship.getSize().x;
+        ship.height =  textures.ship.getSize().y;
+
         sf::Vector2f border_size (ship.width-150, ship.height);
         border.setSize(border_size);
         border.setPosition(ship.x+150, ship.y);
@@ -145,12 +152,12 @@ int main (){
 		}
 
 
-        // generate a new set of walls every 200 frames
-        if (game.frames % 150 == 0){
+        // generate a new set of walls every 100 frames
+        if (game.frames % 100 == 0){
 
             // use random generator for heights but restrict them to be 2x ship height apart. 
             int random_height = rand() % 850;
-            int gap = textures.ship->getSize().y * 2;
+            int gap = textures.ship.getSize().y * 2;
 
             sf::Sprite wall_lower;
             wall_lower.setTexture(textures.wall);
@@ -165,14 +172,12 @@ int main (){
             
         }
 
-        int factor = 1;
 
         // move walls towards and past player
         if(game.game_state != 1){
             for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
             
-                factor = game.score / 10;
-                (*itr).move(-(10 +(5 * factor)), 0);
+                (*itr).move(-15, 0);
 			}
         }
 
@@ -200,7 +205,7 @@ int main (){
                 }
 
                 // if collision is detected, set game to game over, explode
-                if(collision_detect(ship.x + 150, ship.y, ship.width-150, ship.height, wall_x, wall_y, wall_width, wall_height)){
+                if(ship.collision_detect(ship.x + 150, ship.y, ship.width-150, ship.height, wall_x, wall_y, wall_width, wall_height)){
                     game.game_state = 1;
                     explode.play();
                 }
@@ -218,10 +223,11 @@ int main (){
             }
 
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-                ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship->getSize().x), (window.getSize().y / 2) - (textures.ship->getSize().y / 2));
+                ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship.getSize().x), (window.getSize().y / 2) - (textures.ship.getSize().y / 2));
                 game.score = 0;
                 walls.clear();
                 game.game_state = 0;
+                boo.play();
             }
 
             if (game.game_state == 0){
@@ -249,16 +255,21 @@ int main (){
             ship.update();
         }
         
+        // draw ship sprite and the dead ship sprite (dead off screen)
         window.draw(ship.sprite);
         window.draw(ship.dead_sprite);
         
         // draw the walls
         for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++){
             window.draw(*itr);
+
+            if ((*itr).getPosition().x < -200){     // erase the walls that pass the screen
+                std::cout << "delete wall\n";
+                walls.erase(walls.begin());
+            }
         }
 
-        
-
+        // display start message
         if(game.frames < 150){
             window.draw(game.enter_message_text);
         }
@@ -275,13 +286,4 @@ int main (){
 
     }
     return 0;
-}
-
-
-// function to check for collision between 2 objects, given their x, y, width, height
-bool collision_detect (float x_coord_1, float y_coord_1, float width_1, float height_1, float x_coord_2, float y_coord_2, float width_2, float height_2) {
-	if (x_coord_1 + width_1 >= x_coord_2 && x_coord_1 <= x_coord_2 + width_2 && y_coord_1 + height_1 >= y_coord_2 && y_coord_1 <= y_coord_2 + height_2) {
-		return true;
-	}
-	return false;
 }

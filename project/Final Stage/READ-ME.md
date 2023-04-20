@@ -3,13 +3,6 @@ Small time, not overly complex, basic game using C++ and SFML
 
 <img width="1190" alt="Screenshot 2023-04-12 at 5 38 07 PM" src="https://user-images.githubusercontent.com/122639149/231594834-812202ef-cf23-4302-9355-bfaf6c86af0d.png">
 
-## Note: 
-not in final state, some more finishing touches are required but it 95% complete.
-still missing:
-- increase speed based on score
-- adjust ship hitbox for better accuracy
-- touch up comments and code for readability
-
 ## For: COP-3003 course project
 
 ## Reason: 
