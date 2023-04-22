@@ -13,7 +13,6 @@ int main (){
     // will use time to seed random generator for random wall heights
     srand(time(0));
 
-
     // create window with size of 1000 by 600, set framerate limit to 90fps, 
     sf::RenderWindow window (sf::VideoMode(2400, 1400), "Test");
     window.setFramerateLimit(60);
@@ -63,8 +62,8 @@ int main (){
     ship.dead_sprite.setScale(0.5,0.5);
 
     // red outline around ship for testing
-    sf::RectangleShape border;
-    border.setFillColor(sf::Color::Red);
+    sf::RectangleShape hitbox;
+    hitbox.setFillColor(sf::Color::Red);
 
     // create a vector for the walls, so we can add and delete easily
     std::vector <sf::Sprite> walls;
@@ -72,24 +71,33 @@ int main (){
 
     // create Game class instance and update
     Game game = Game();
+
+    // update with current highest score from fi
+    game.get_high_score();
+
     game.background.setTexture(textures.background);
     game.background.setScale(1.5, 1.5);
-    game.font.loadFromFile("./Fonts/Menlo-Regular.ttf");
+    game.font.loadFromFile("./Fonts/font.ttf");
 
-    game.score_text.setFont(game.font);
-    game.score_text.setFillColor(sf::Color::White);
-    game.score_text.setCharacterSize(50);
-    game.score_text.setPosition(30, 30);
+    game.score.setFont(game.font);
+    game.score.setFillColor(sf::Color::White);
+    game.score.setCharacterSize(50);
+    game.score.setPosition(30, 30);
 
-    game.high_score_text.setFont(game.font);
-    game.high_score_text.setFillColor(sf::Color::White);
-    game.high_score_text.setCharacterSize(50);
-    game.high_score_text.setPosition(30, 90);
+    game.high_score.setFont(game.font);
+    game.high_score.setFillColor(sf::Color::White);
+    game.high_score.setCharacterSize(50);
+    game.high_score.setPosition(30, 90);
 
-    game.enter_message_text.setFont(game.font);
-    game.enter_message_text.setFillColor(sf::Color::White);
-    game.enter_message_text.setCharacterSize(65);
-    game.enter_message_text.setPosition(window.getSize().x / 2 - (window.getSize().x / 4), window.getSize().y / 2 - (window.getSize().y / 4));
+    game.instruct.setFont(game.font);
+    game.instruct.setFillColor(sf::Color::White);
+    game.instruct.setCharacterSize(50);
+    game.instruct.setPosition(30, 1300);
+
+    game.enter_message.setFont(game.font);
+    game.enter_message.setFillColor(sf::Color::White);
+    game.enter_message.setCharacterSize(65);
+    game.enter_message.setPosition(window.getSize().x / 2 - (window.getSize().x / 4), window.getSize().y / 2 - (window.getSize().y / 4));
 
     int score_keep = 0;
 
@@ -98,14 +106,19 @@ int main (){
 
 
         // load texts with current score and high score, but need to to_string them to load
-        game.score_text.setString(std::to_string(game.score));
-        game.high_score_text.setString(std::to_string(game.high_score));
-        game.enter_message_text.setString(game.enter_message);
+        game.score.setString(std::to_string(game.score_text));
+        game.high_score.setString(std::to_string(game.high_score_text));
+        game.enter_message.setString(game.enter_message_text);
+        game.instruct.setString(game.instruct_text);
 
 
         // load ship sprite with initial texture unless game over, then set ship to dead
         if(game.game_state == 1){
             ship.dead_sprite.setPosition(ship.sprite.getPosition().x - 300, ship.sprite.getPosition().y - 300);
+        }
+
+        if(game.game_state == 0){
+            ship.dead_sprite.setPosition((window.getSize().x + textures.ship_dead.getSize().x + 1), (window.getSize().y + textures.ship_dead.getSize().y + 1));
         }
         
         
@@ -117,9 +130,9 @@ int main (){
         ship.width = textures.ship.getSize().x;
         ship.height =  textures.ship.getSize().y;
 
-        sf::Vector2f border_size (ship.width-150, ship.height);
-        border.setSize(border_size);
-        border.setPosition(ship.x+150, ship.y);
+        sf::Vector2f hitbox_size (ship.width-150, ship.height);
+        hitbox.setSize(hitbox_size);
+        hitbox.setPosition(ship.x+150, ship.y);
         
 
         // if player goes out of bounds of screen
@@ -140,12 +153,12 @@ int main (){
             if (ship.sprite.getPosition().x <= ((*itr).getPosition().x + textures.wall.getSize().x + 10) 
             && ship.sprite.getPosition().x >= ((*itr).getPosition().x + textures.wall.getSize().x)){
                 
-                game.score++; 
+                game.score_text++; 
 
 				buzz.play();
 
-				if (game.score > game.high_score) {
-					game.high_score = game.score;
+				if (game.score_text > game.high_score_text) {
+					game.high_score_text = game.score_text;
 				}
 				break;        
             }
@@ -178,9 +191,8 @@ int main (){
             for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
             
                 (*itr).move(-15, 0);
-			}
+            }
         }
-
 
         // collistion detection for game end
         if (game.game_state == 0){
@@ -224,7 +236,7 @@ int main (){
 
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
                 ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship.getSize().x), (window.getSize().y / 2) - (textures.ship.getSize().y / 2));
-                game.score = 0;
+                game.score_text = 0;
                 walls.clear();
                 game.game_state = 0;
                 boo.play();
@@ -239,6 +251,7 @@ int main (){
                 else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down){
                     ship.velocity = 2; // velocity = down
                 }
+
                 else{
                     ship.velocity = 0; // velocity = 0
                 }
@@ -248,7 +261,9 @@ int main (){
         // clear screen, draw the background and ship sprite
         window.clear();
         window.draw(game.background);
-        window.draw(border);
+        
+        // uncomment this line to show ship hitbox
+        //window.draw(hitbox);
 
         // using new funciton .update for sprite, which takes the velocity set via keyboard input and moves the position of the sprite. 
         if(game.game_state == 0){
@@ -264,20 +279,20 @@ int main (){
             window.draw(*itr);
 
             if ((*itr).getPosition().x < -200){     // erase the walls that pass the screen
-                std::cout << "delete wall\n";
                 walls.erase(walls.begin());
             }
         }
 
         // display start message
         if(game.frames < 150){
-            window.draw(game.enter_message_text);
+            window.draw(game.enter_message);
         }
         
 
         // draw scores
-        window.draw(game.score_text);
-        window.draw(game.high_score_text);
+        window.draw(game.score);
+        window.draw(game.high_score);
+        window.draw(game.instruct);
         
 
         // diplay and count frames
@@ -285,5 +300,9 @@ int main (){
         game.frames++;
 
     }
+
+    // write the current highscore to file
+    game.set_high_score();
+
     return 0;
 }

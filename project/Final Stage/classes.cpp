@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <fstream>
+#include <iostream>
 
 // class for ship, holds basic information about ship position and size
 class Ship {
@@ -40,19 +42,60 @@ public:
 class Game {
 
 public:
-    int score;
-    int high_score;
+    int score_text;
+    int high_score_text;
     int frames;
-    std::string enter_message = "Welcome!\nUse arrow keys to move up and down\nMay the mass x acceleration be with you...";
+    std::string enter_message_text = "Welcome!\nMay the mass x acceleration be with you...";
+    std::string instruct_text = "Use arrow keys to move up and down";
     
     int game_state; // 0 is running, 1 is stopped
 
     sf::Sprite background;
-    sf::Text score_text;
-    sf::Text high_score_text;
-    sf::Text enter_message_text;
+    sf::Text score;
+    sf::Text high_score;
+    sf::Text enter_message;
+    sf::Text instruct;
     sf::Font font;
 
     Game()=default;
 
+    // function to set current high score from file
+    void get_high_score(){
+
+        std::fstream score_file;
+        score_file.open("high_scores.txt");
+
+        if (score_file.is_open()){
+
+            std::string line;
+
+            // copy content of text file to lines class member
+            while (std::getline(score_file, line)){
+                high_score_text = std::stoi(line);
+            }
+
+            // if we made it here then the file was opened, so now close
+            score_file.close();
+        }   
+        else{
+            std::cout << "did not open\n";
+        }
+    }
+
+    // Write high score to file. Will not make any real change unless high score changes
+    void set_high_score(){
+
+        std::fstream score_file;
+        score_file.open("./high_scores.txt");
+
+        if (score_file.is_open()){
+
+            score_file << high_score_text;
+
+            score_file.close();
+        }
+        else{
+            std::cout << "did not open\n";
+        }
+    }
 };
