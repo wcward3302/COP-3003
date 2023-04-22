@@ -14,7 +14,7 @@ int main (){
     srand(time(0));
 
     // create window with size of 1000 by 600, set framerate limit to 90fps, 
-    sf::RenderWindow window (sf::VideoMode(2400, 1400), "Test");
+    sf::RenderWindow window (sf::VideoMode(2400, 1400), "Project game!");
     window.setFramerateLimit(60);
 
 
@@ -97,7 +97,7 @@ int main (){
     game.enter_message.setFont(game.font);
     game.enter_message.setFillColor(sf::Color::White);
     game.enter_message.setCharacterSize(65);
-    game.enter_message.setPosition(window.getSize().x / 2 - (window.getSize().x / 4), window.getSize().y / 2 - (window.getSize().y / 4));
+    game.enter_message.setPosition(window.getSize().x / 2 - (window.getSize().x / 3), window.getSize().y / 2 - 200);
 
     int score_keep = 0;
 
@@ -138,9 +138,9 @@ int main (){
         // if player goes out of bounds of screen
         if (game.game_state == 0) {
 			if (ship.y < 0) {
-				ship.sprite.setPosition(250, 0);
+				ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship.getSize().x), 0);
 			} 
-            else if (ship.y + ship.height > 2000) {
+            else if (ship.y + ship.height > 1400) {
 				game.game_state = 1;
 				explode.play();
 			}

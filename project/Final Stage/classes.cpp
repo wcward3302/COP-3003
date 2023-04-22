@@ -46,7 +46,7 @@ public:
     int high_score_text;
     int frames;
     std::string enter_message_text = "Welcome!\nMay the mass x acceleration be with you...";
-    std::string instruct_text = "Use arrow keys to move up and down";
+    std::string instruct_text = "Use arrow keys to move up and down, esc to restart";
     
     int game_state; // 0 is running, 1 is stopped
 
