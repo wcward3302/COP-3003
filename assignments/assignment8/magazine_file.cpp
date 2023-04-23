@@ -11,6 +11,18 @@ Definitions of all functions needed to perform the necessary tasks
 
 // -------------------------------------private member functions--------------------------------------
 
+std::string Magazine_file::validate(std::string file_name){
+    std::string validated_name;
+    
+    // parse name char by char, push valid chars on validated string  
+    for (char chars : file_name){
+        if(chars >= 65 && chars <= 122){
+            validated_name.push_back(chars);
+        }
+    }
+
+    return validated_name;
+}
 
 // function will take vector of strings, parse out desired data, return the filled struct to the vector of structs
 void Magazine_file::split_data(){
@@ -85,7 +97,9 @@ Magazine_file::Magazine_file(){
 
 // overloaded constructor
 Magazine_file::Magazine_file(std::string in_file_name){
-    filename = "./" + in_file_name + ".xml";
+
+    filename = "./" + validate(in_file_name) + ".xml";
+    
 }
 
 // takes input and changs the member veriable "file name" which is used to open "x" file
@@ -124,7 +138,10 @@ void Magazine_file::write_file(std::string out_file_name){
     to_string();
 
     std::fstream file_stream;
-    file_stream.open(out_file_name + ".txt");
+
+    filename = "./" + validate(out_file_name) + ".txt";
+
+    file_stream.open(filename);
 
     if(file_stream.is_open()){
 

@@ -31,10 +31,12 @@ private:
     std::vector <std::string> lines;
     std::string to_output;
 
-    // internal class function to handle moving lines from file into data structure
+    // internal class function not needed in main
     void split_data();
 
     void to_string();
+
+    std::string validate(std::string);
 
 public:
 
