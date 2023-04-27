@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
-#include "classes.cpp"
+
+#include "game_classes.hpp"
 
 int main (){
 

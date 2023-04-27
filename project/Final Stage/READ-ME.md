@@ -21,5 +21,5 @@ Yours truly
 ## How to run on MacOS
 
 - brew install sfml
-- g++ main.cpp -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -std=c++17 -o game.out
-- ./game.out
+- g++ main.cpp game_classes.cpp -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -std=c++17
+- ./a.out
