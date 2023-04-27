@@ -59,10 +59,12 @@ void Magazine_file::split_data(){
                 magazine_object.founded = std::stoi(each.substr(each.find('>') + 1, (each.find('/') - each.find('>')) - 2));
                 counter++;
                 break;
+
             case 5:
                 magazine_object.founder = each.substr(each.find('>') + 1, (each.find('/') - each.find('>')) - 2);
                 counter++;
                 break;
+                
             case 6:
                 counter = 0;
                 magazine_list.push_back(magazine_object);

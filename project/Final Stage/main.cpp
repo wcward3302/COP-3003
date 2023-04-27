@@ -6,17 +6,18 @@
 #include <vector>
 #include "classes.cpp"
 
-
-
 int main (){
 
     // will use time to seed random generator for random wall heights
     srand(time(0));
 
+// ---------------------------------------------------------- Window setup ----------------------------------------------------------
+
     // create window with size of 1000 by 600, set framerate limit to 90fps, 
     sf::RenderWindow window (sf::VideoMode(2400, 1400), "Project game!");
     window.setFramerateLimit(60);
 
+// ---------------------------------------------------------- Sounds setup ----------------------------------------------------------
 
     // load sounds into buffer
     sf::SoundBuffer explode_buffer;
@@ -34,8 +35,7 @@ int main (){
     boo_buffer.loadFromFile("./Audio/boo.wav");
     boo.setBuffer(boo_buffer);
 
-
-    
+// --------------------------------------------------------- Texture setup ---------------------------------------------------------
 
     // struct to hold textures for rendering, can just do sprite.settexture(texture.)
     struct Textures {
@@ -45,15 +45,15 @@ int main (){
         sf::Texture background;
     } textures;
     
-
     // load all images into members of Textures struct
     textures.ship.loadFromFile("./Images/ship.png");
     textures.ship_dead.loadFromFile("./Images/explosion.png");
     textures.wall.loadFromFile("./Images/walls.png");
     textures.background.loadFromFile("./Images/deathstar_surface.jpeg");
 
+// -------------------------------------------------------- Ship Sprite setup --------------------------------------------------------
 
-    // create ship instance, set intial position (1/4 hori, 1/2 vert)
+    // create ship instance, set initial position (1/4 hori, 1/2 vert)
     Ship ship = Ship();
     ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship.getSize().x), (window.getSize().y / 2) - (textures.ship.getSize().y / 2));
     ship.sprite.setTexture(textures.ship);
@@ -65,9 +65,12 @@ int main (){
     sf::RectangleShape hitbox;
     hitbox.setFillColor(sf::Color::Red);
 
+// -------------------------------------------------------- Walls Sprite setup --------------------------------------------------------
+
     // create a vector for the walls, so we can add and delete easily
     std::vector <sf::Sprite> walls;
 
+// -------------------------------------------------------- Game Content setup --------------------------------------------------------
 
     // create Game class instance and update
     Game game = Game();
@@ -101,16 +104,12 @@ int main (){
 
     int score_keep = 0;
 
+// ---------------------------------------------------------- Window Open ----------------------------------------------------------
+
     // will loop so long as window is open. Handle rendering and movement here
     while(window.isOpen()) {
 
-
-        // load texts with current score and high score, but need to to_string them to load
-        game.score.setString(std::to_string(game.score_text));
-        game.high_score.setString(std::to_string(game.high_score_text));
-        game.enter_message.setString(game.enter_message_text);
-        game.instruct.setString(game.instruct_text);
-
+// ------------------------------------------------------- Ship Sprite Updates -------------------------------------------------------
 
         // load ship sprite with initial texture unless game over, then set ship to dead
         if(game.game_state == 1){
@@ -118,10 +117,9 @@ int main (){
         }
 
         if(game.game_state == 0){
-            ship.dead_sprite.setPosition((window.getSize().x + textures.ship_dead.getSize().x + 1), (window.getSize().y + textures.ship_dead.getSize().y + 1));
-        }
-        
-        
+            ship.dead_sprite.setPosition((window.getSize().x + textures.ship_dead.getSize().x + 1), 
+                                         (window.getSize().y + textures.ship_dead.getSize().y + 1));
+        }        
 
         // track ship current position
         ship.x = ship.sprite.getPosition().x;
@@ -130,9 +128,10 @@ int main (){
         ship.width = textures.ship.getSize().x;
         ship.height =  textures.ship.getSize().y;
 
-        sf::Vector2f hitbox_size (ship.width-150, ship.height);
-        hitbox.setSize(hitbox_size);
-        hitbox.setPosition(ship.x+150, ship.y);
+        // uncommenting will show ship hitbox
+        //sf::Vector2f hitbox_size (ship.width-150, ship.height);
+        //hitbox.setSize(hitbox_size);
+        //hitbox.setPosition(ship.x+150, ship.y);
         
 
         // if player goes out of bounds of screen
@@ -145,7 +144,14 @@ int main (){
 				explode.play();
 			}
 		}
-        
+
+// -------------------------------------------------------- Game Scores setup -------------------------------------------------------
+
+        // load texts with current score and high score, but need to to_string them to load
+        game.score.setString(std::to_string(game.score_text));
+        game.high_score.setString(std::to_string(game.high_score_text));
+        game.enter_message.setString(game.enter_message_text);
+        game.instruct.setString(game.instruct_text);
 
         // get score
 		for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
@@ -164,6 +170,7 @@ int main (){
             }
 		}
 
+// ------------------------------------------------------- Walls Sprite Update -------------------------------------------------------
 
         // generate a new set of walls every 100 frames
         if (game.frames % 100 == 0){
@@ -194,7 +201,9 @@ int main (){
             }
         }
 
-        // collistion detection for game end
+// ---------------------------------------------------- Ship / Wall Collision Check -----------------------------------------------------
+
+        // collision detection for game end
         if (game.game_state == 0){
             for (std::vector<sf::Sprite>::iterator itr = walls.begin(); itr != walls.end(); itr++) {
 				
@@ -224,6 +233,8 @@ int main (){
 			}
         }
 
+// ----------------------------------------------------- Keyboard Input -> Movement ------------------------------------------------------
+
         int direction = 0;
         // check for keypresses to update ship position or restart
         sf::Event event;
@@ -235,7 +246,9 @@ int main (){
             }
 
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-                ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship.getSize().x), (window.getSize().y / 2) - (textures.ship.getSize().y / 2));
+                ship.sprite.setPosition((window.getSize().x / 4) - (textures.ship.getSize().x), 
+                                        (window.getSize().y / 2) - (textures.ship.getSize().y / 2));
+                
                 game.score_text = 0;
                 walls.clear();
                 game.game_state = 0;
@@ -257,6 +270,8 @@ int main (){
                 }
             }
         }
+
+// -------------------------------------------------------- Draw Content to Screen -------------------------------------------------------
     
         // clear screen, draw the background and ship sprite
         window.clear();
@@ -265,7 +280,7 @@ int main (){
         // uncomment this line to show ship hitbox
         //window.draw(hitbox);
 
-        // using new funciton .update for sprite, which takes the velocity set via keyboard input and moves the position of the sprite. 
+        // using new function .update for sprite, which takes the velocity set via keyboard input and moves the position of the sprite. 
         if(game.game_state == 0){
             ship.update();
         }
@@ -287,18 +302,15 @@ int main (){
         if(game.frames < 150){
             window.draw(game.enter_message);
         }
-        
 
         // draw scores
         window.draw(game.score);
         window.draw(game.high_score);
         window.draw(game.instruct);
         
-
-        // diplay and count frames
+        // display and count frames
         window.display();
         game.frames++;
-
     }
 
     // write the current highscore to file
