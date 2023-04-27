@@ -1,7 +1,7 @@
 # COP-project-game
 Small time, not overly complex, basic game using C++ and SFML
 
-<img width="1190" alt="Screenshot 2023-04-12 at 5 38 07 PM" src="https://user-images.githubusercontent.com/122639149/231594834-812202ef-cf23-4302-9355-bfaf6c86af0d.png">
+![game_sample](https://user-images.githubusercontent.com/122639149/234976748-88022279-8526-4e2a-be4b-b4431323bdfe.gif)
 
 ## For: COP-3003 course project
 
